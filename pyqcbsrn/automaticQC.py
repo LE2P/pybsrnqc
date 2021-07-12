@@ -2,9 +2,7 @@
 import csv
 import json
 import os
-import sys
 import pandas as pd
-import pvlib
 import datetime
 from collections import OrderedDict
 from pathlib import Path
@@ -12,11 +10,15 @@ from bokeh.layouts import column
 from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
 from bokeh.plotting import figure, output_file, show
-from qclib import qcrad, utils
+import utils
+import qc_functions as qcf
 
 # Get data conf from JSON file
 with open('conf/autoqc_conf.json', 'r') as f:
     loaded_json = json.load(f)
+
+with open('conf/qcrad_conf.json', 'r') as f:
+    coefs = json.load(f)
 
 
 class conf:
@@ -51,9 +53,9 @@ def fix_values(row: OrderedDict):
         if conf.TA_NAME in row and utils.isfloat(row[conf.TA_NAME]):
             Ta = float(row[conf.TA_NAME]) + 273.15
     except KeyError as e:
-        print('KeyError: %s' %str(e))
+        print('KeyError: %s' % str(e))
     except ValueError as valueError:
-        print('ValueError: %s' %str(valueError))
+        print('ValueError: %s' % str(valueError))
     return (timestamp, GSW, Dif, DirN, LWdn, Ta)
 
 
@@ -63,15 +65,13 @@ def getRow(row: OrderedDict, zenith_serie):
     SZA = float(zenith_serie[timestamp])
     # application of data quality control
     qc_result = {
-        "timestamp" : timestamp,
-        "QC1"  : qcrad.QC1(GSW, SZA),
-        "QC2"  : qcrad.QC2(Dif, SZA),
-        "QC3"  : qcrad.QC3(DirN, SZA),
-        "QC5"  : qcrad.QC5(LWdn),
-        "QC7"  : qcrad.QC7(GSW, Dif, DirN, SZA),
-        "QC8"  : qcrad.QC8(Dif, GSW, SZA),
-        "QC10" : qcrad.QC10(LWdn, Ta),
-        "QC19" : qcrad.QC19(Ta)
+        "timestamp": timestamp,
+        "QC1": qcf.QC1.lab(SZA, GSW, coefs),
+        "QC2": qcf.QC2.lab(SZA, Dif, coefs),
+        "QC3": qcf.QC3.lab(SZA, DirN, coefs),
+        "QC5": qcf.QC5.lab(SZA, LWdn, coefs),
+        "QC10": qcf.QC10.lab(Ta, LWdn),
+        "QC19": qcf.QC19(Ta)
     }
     # create row for aqc file
     row_aqc = row
@@ -109,8 +109,8 @@ def generateQCFiles(filepath):
     """Create the 2 files _aqc.csv and _qrcad.csv"""
     # Manage filenames
     FILE_BRUT = filepath[0]
-    FILE_AQC = os.path.splitext(FILE_BRUT.replace('_brut', ''))[0]+'_aqc.csv'
-    FILE_QCRAD = os.path.splitext(FILE_BRUT.replace('_brut', ''))[0]+'_qcrad.csv'
+    FILE_AQC = os.path.splitext(FILE_BRUT.replace('_brut', ''))[0] + '_aqc.csv'
+    FILE_QCRAD = os.path.splitext(FILE_BRUT.replace('_brut', ''))[0] + '_qcrad.csv'
     # load input file into a DataFrame
     file_brut = pd.read_csv(FILE_BRUT)
     timestamp_list = file_brut.timestamp.to_list()
@@ -140,8 +140,8 @@ def plotQCFiles(filepath):
     yearMonth = (((os.path.splitext((csv_name))[0]).split('/'))[-1]).split('_')[0]
     typeFile = (((os.path.splitext((csv_name))[0]).split('/'))[-1]).split('_')[1]
     # create directory if it necessary
-    Path("plot/"+yearMonth).mkdir(parents=True, exist_ok=True)
-    chart_name = 'plot/'+yearMonth+'/'+typeFile+'.html'
+    Path("plot/" + yearMonth).mkdir(parents=True, exist_ok=True)
+    chart_name = 'plot/' + yearMonth + '/' + typeFile + '.html'
     if typeFile == "qcrad":
         parameters_to_plot = ["QC1", "QC2", "QC3", "QC5", "QC7", "QC8", "QC10", "QC19"]
     else:
@@ -161,9 +161,9 @@ def plotQCFiles(filepath):
         s = figure(plot_width=1600, plot_height=900, x_axis_type="datetime")
         s.circle(x='date', y=var, source=source)
         s.line(x='date', y=var, legend_label=var, source=source)
-        hover.tooltips=[
+        hover.tooltips = [
             ('date', '@date{%F %T}'),
-            (var, '@'+var)
+            (var, '@' + var)
         ]
         hover.formatters = {'@date': 'datetime'}
         s.add_tools(hover)
