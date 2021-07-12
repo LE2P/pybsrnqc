@@ -5,9 +5,9 @@ Module that open the data  as we want
 # Required Imports
 import pandas as pd
 import json
-import os 
+import os
 
-from qclib import utils
+from pyqcbsrn import utils
 
 # -----------------------------------------------------------------------------------------------------------------
 
