@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pyqcbsrn',
-    version='0.1.3',
+    version='0.1.4',
     description='Package to study BSRN data and their quality control',
     url='https://github.com/LE2P/PyBsrnQC/tree/main/pyqcbsrn',
     author='Maelle Baronnet',
@@ -11,6 +11,7 @@ setup(
     packages=['pyqcbsrn'],
     install_requires=['pandas',
                       'numpy',
+                      'matplotlib.pyplot'
                       ],
 
     classifiers=[
