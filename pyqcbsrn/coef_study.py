@@ -7,38 +7,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+import importlib.resources
+import json
+
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 # -----------------------------------------------------------------------------------------------------------
 # Initialisation of a set of coefficients
-
-# Coefficients initiaux
-dic_coefs = {'device': {'transactionID': 1510919492,
-                        'sensorID': 'DHI_021_Avg',
-                        'altitude': 97,
-                        'startDay': '2020-12-01 00:00:00',
-                        'endDay': '2020-12-31 23:59:00'},
-             'BSRN': {'C1': 1.,
-                      'D1': 0.9,
-                      'C2': 0.52,
-                      'D2': 0.6,
-                      'C3': 0.76,
-                      'D3': 0.8,
-                      'C5': 330,
-                      'D5': 260,
-                      'C6': 465,
-                      'D6': 500,
-                      'C11': 0.76,
-                      'D11': 0.5,
-                      'C12': 11,
-                      'D12': 23,
-                      'C17D': 10,
-                      'C18': -1.3,
-                      'C19': 1},
-             'cassandra': {'nodes': ['10.82.64.101', '10.82.64.102', '10.82.64.103'],
-             'keyspace': 'gAAAAABfrTesyLHzrDXJbZ5XTilr9qWMaKHCQ_vjcdkHN7IoACUAxtsiZEEAId7RY9H4Bz_-Cg_xLaPUdeGu371DB7eSvy_2zw==',
-             'usr': 'root',
-             'license': 'BillBaoba&Co'}}
+# Get data conf from JSON file
+with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
+    with open(data_path, 'r') as f:
+        dic_coefs = json.load(f)
 
 
 # ------------------------------------------------------------------------------------------------------------

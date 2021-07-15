@@ -6,34 +6,15 @@ from pyqcbsrn import qc_functions as qcf
 from pyqcbsrn import plot_limits as pl
 from pyqcbsrn import coef_study as cs
 
-# Coefficients initialisation
+import importlib.resources
+import json
 
-dic_coefs = {'device': {'transactionID': 1510919492,
-                        'sensorID': 'DHI_021_Avg',
-                        'altitude': 97,
-                        'startDay': '2020-12-01 00:00:00',
-                        'endDay': '2020-12-31 23:59:00'},
-             'BSRN': {'C1': 1.,
-                      'D1': 0.9,
-                      'C2': 0.52,
-                      'D2': 0.6,
-                      'C3': 0.76,
-                      'D3': 0.8,
-                      'C5': 330,
-                      'D5': 260,
-                      'C6': 465,
-                      'D6': 500,
-                      'C11': 0.76,
-                      'D11': 0.8,
-                      'C12': 11,
-                      'D12': 23,
-                      'C17D': 10,
-                      'C18': -1.3,
-                      'C19': 1},
-             'cassandra': {'nodes': ['10.82.64.101', '10.82.64.102', '10.82.64.103'],
-             'keyspace': 'gAAAAABfrTesyLHzrDXJbZ5XTilr9qWMaKHCQ_vjcdkHN7IoACUAxtsiZEEAId7RY9H4Bz_-Cg_xLaPUdeGu371DB7eSvy_2zw==',
-             'usr': 'root',
-             'license': 'BillBaoba&Co'}}
+
+# Coefficients initialisation
+# Get data conf from JSON file
+with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
+    with open(data_path, 'r') as f:
+        dic_coefs = json.load(f)
 
 
 def compute(level='level_2'):
@@ -90,10 +71,12 @@ def compute(level='level_2'):
 
     elif QC.vary == 'direct_avg':
         df_score, score = cs.calc_coef(df, log_kernel, QC, threshold, level=level, coef_range=coef_range, step=step, selected=selected)
-        print(f'Best coefficient : {score}')
+        print('Best coefficient:')
+        print(score)
     else:
         df_score, score = cs.calc_coef(df, log_kernel, QC, threshold, level=level, coef_range=coef_range, step=step)
-        print(f'Best coefficient : {score}')
+        print('Best coefficient:')
+        print(score)
 
     # In the case there are several best scores
     if score.shape != (1, 5):
