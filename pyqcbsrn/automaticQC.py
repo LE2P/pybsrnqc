@@ -140,7 +140,7 @@ def generateQCFiles(filepath):
 def plotQCFiles(filepath):
     """Plot the input file"""
     # init
-    csv_name = filepath[0]
+    csv_name = filepath
     yearMonth = (((os.path.splitext((csv_name))[0]).split('/'))[-1]).split('_')[0]
     typeFile = (((os.path.splitext((csv_name))[0]).split('/'))[-1]).split('_')[1]
     # create directory if it necessary
