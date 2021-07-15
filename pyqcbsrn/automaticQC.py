@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import csv
 import json
+import importlib.resources
 import os
 import pandas as pd
 import datetime
@@ -10,15 +11,17 @@ from bokeh.layouts import column
 from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
 from bokeh.plotting import figure, output_file, show
-import utils
-import qc_functions as qcf
+from pyqcbsrn import utils
+from pyqcbsrn import qc_functions as qcf
 
 # Get data conf from JSON file
-with open('conf/autoqc_conf.json', 'r') as f:
-    loaded_json = json.load(f)
+with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
+    with open(data_path, 'r') as f:
+        coefs = json.load(f)
 
-with open('conf/qcrad_conf.json', 'r') as f:
-    coefs = json.load(f)
+with importlib.resources.path("pyqcbsrn", "autoqc_conf.json") as data_path:
+    with open(data_path, 'r') as f:
+        loaded_json = json.load(f)
 
 
 class conf:
@@ -66,11 +69,11 @@ def getRow(row: OrderedDict, zenith_serie):
     # application of data quality control
     qc_result = {
         "timestamp": timestamp,
-        "QC1": qcf.QC1.lab(SZA, GSW, coefs),
-        "QC2": qcf.QC2.lab(SZA, Dif, coefs),
-        "QC3": qcf.QC3.lab(SZA, DirN, coefs),
-        "QC5": qcf.QC5.lab(SZA, LWdn, coefs),
-        "QC10": qcf.QC10.lab(Ta, LWdn),
+        "QC1": qcf.QC1().lab(SZA, GSW, coefs),
+        "QC2": qcf.QC2().lab(SZA, Dif, coefs),
+        "QC3": qcf.QC3().lab(SZA, DirN, coefs),
+        "QC5": qcf.QC5().lab(SZA, LWdn, coefs),
+        "QC10": qcf.QC1().lab(Ta, LWdn, coefs),
         "QC19": qcf.QC19(Ta)
     }
     # create row for aqc file
@@ -107,8 +110,9 @@ def getRow(row: OrderedDict, zenith_serie):
 
 def generateQCFiles(filepath):
     """Create the 2 files _aqc.csv and _qrcad.csv"""
+    print(filepath)
     # Manage filenames
-    FILE_BRUT = filepath[0]
+    FILE_BRUT = filepath
     FILE_AQC = os.path.splitext(FILE_BRUT.replace('_brut', ''))[0] + '_aqc.csv'
     FILE_QCRAD = os.path.splitext(FILE_BRUT.replace('_brut', ''))[0] + '_qcrad.csv'
     # load input file into a DataFrame
