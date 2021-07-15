@@ -8,10 +8,10 @@ setup(
     author='Maelle Baronnet',
     author_email='maelle.baronnet@gmail.com',
     license='MIT',
+    include_package_data=True,
     packages=['pyqcbsrn'],
     install_requires=['pandas',
-                      'numpy',
-                      'matplotlib.pyplot'
+                      'numpy'
                       ],
 
     classifiers=[

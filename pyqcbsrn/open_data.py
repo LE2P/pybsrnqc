@@ -5,15 +5,16 @@ Module that open the data  as we want
 # Required Imports
 import pandas as pd
 import json
+import importlib.resources
 import os
 
 from pyqcbsrn import utils
-
 # -----------------------------------------------------------------------------------------------------------------
 
 # Get data conf from JSON file
-with open('./conf/autoqc_conf.json', 'r') as f:
-    loaded_json = json.load(f)
+with importlib.resources.path("pyqcbsrn", "autoqc_conf.json") as data_path:
+    with open(data_path, 'r') as f:
+        loaded_json = json.load(f)
 
 
 class Conf:
@@ -45,7 +46,8 @@ def open_all(path='./dataset/', period=None, select_day=False, select_zenith=Tru
     if period is None:
 
         dirs = os.listdir(path)
-        dirs.remove('.keep')
+        if '.keep' in dirs:
+            dirs.remove('.keep')
 
     else:
 

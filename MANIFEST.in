@@ -1,0 +1,2 @@
+include pyqcbsrn/autoqc_conf.json
+include pyqcbsrn/qcrad_conf.json
