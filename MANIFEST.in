@@ -1,2 +1,4 @@
 include pyqcbsrn/autoqc_conf.json
 include pyqcbsrn/qcrad_conf.json
+include pyqcbsrn/callbackSave.js
+include pyqcbsrn/callbackSelect.js

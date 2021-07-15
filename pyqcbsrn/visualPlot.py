@@ -9,6 +9,8 @@ from bokeh.plotting import ColumnDataSource, figure, output_file, show
 from os import makedirs, path
 from pandas import read_csv, to_datetime
 
+import importlib.resources
+
 
 def plotBSRN(filepath, patterns=None, timeStart=None, timeEnd=None):
 
@@ -17,7 +19,8 @@ def plotBSRN(filepath, patterns=None, timeStart=None, timeEnd=None):
     bsrnFile = read_csv(filepath)
 
     # Truncate data between date
-    timeStartIndex = None; timeEndIndex = None
+    timeStartIndex = None
+    timeEndIndex = None
     if timeStart is not None:
         timeStartIndex = bsrnFile.timestamp[bsrnFile.timestamp == timeStart].index[0]
     if timeEnd is not None:
@@ -41,7 +44,8 @@ def plotBSRN(filepath, patterns=None, timeStart=None, timeEnd=None):
     )
 
     # Selection
-    f = open("inst/callbacks/callbackSelect.js", "r")
+    with importlib.resources.path("pyqcbsrn", "callbackSelect.js") as data_path:
+        f = open(data_path, "r")
     js_code = f.read()
     callback = CustomJS(args=dict(bsrnData=bsrnData, bsrnSelect=bsrnSelect), code=js_code)
     bsrnData.selected.js_on_change('indices', callback)
@@ -83,7 +87,8 @@ def plotBSRN(filepath, patterns=None, timeStart=None, timeEnd=None):
 
     # Download button
     button_flag = Button(label="Generate data file", button_type="danger")
-    f = open("inst/callbacks/callbackSave.js", "r")
+    with importlib.resources.path("pyqcbsrn", "callbackSave.js") as data_path:
+        f = open(data_path, "r")
     js_code = f.read()
     callback = CustomJS(args=dict(bsrnSelect=bsrnSelect), code=js_code)
     button_flag.js_on_event(events.ButtonClick, callback)
