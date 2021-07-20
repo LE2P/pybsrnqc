@@ -17,7 +17,7 @@ with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
         dic_coefs = json.load(f)
 
 
-def compute(level='level_2'):
+def compute(path=None, level='level_2'):
 
     # Choosing the QC
     QC = input('What QC do you want to study : ')
@@ -35,7 +35,10 @@ def compute(level='level_2'):
         QC = qcf.QC10()
 
     # Get datas
-    df = od.open_all()
+    if path is not None:
+        df = od.open_all(path=path + '/')
+    else:
+        df = od.open_all()
 
     # Calculating kernel density for the dataset
     if QC.name == 'QC3' or QC.name == 'QC10':

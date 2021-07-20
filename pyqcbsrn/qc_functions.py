@@ -445,6 +445,5 @@ def QC19(Ta):
         if Ta > 350 or Ta < 170:
             return 1
     else:
-        print('Eliminé dès le premier test')
         return -1
     return 0

@@ -14,7 +14,7 @@ from bokeh.plotting import figure, output_file, show
 from pyqcbsrn import utils
 from pyqcbsrn import qc_functions as qcf
 
-# Get data conf from JSON file
+# Get data conf from JSON files
 with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         coefs = json.load(f)
@@ -22,6 +22,8 @@ with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
 with importlib.resources.path("pyqcbsrn", "autoqc_conf.json") as data_path:
     with open(data_path, 'r') as f:
         loaded_json = json.load(f)
+
+# Configuration of some static variables
 
 
 class conf:
@@ -73,7 +75,7 @@ def getRow(row: OrderedDict, zenith_serie):
         "QC2": qcf.QC2().lab(SZA, Dif, coefs),
         "QC3": qcf.QC3().lab(SZA, DirN, coefs),
         "QC5": qcf.QC5().lab(SZA, LWdn, coefs),
-        "QC10": qcf.QC1().lab(Ta, LWdn, coefs),
+        "QC10": qcf.QC10().lab(Ta, LWdn, coefs),
         "QC19": qcf.QC19(Ta)
     }
     # create row for aqc file

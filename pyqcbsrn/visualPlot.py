@@ -4,7 +4,7 @@ from bokeh.io import curdoc
 from bokeh.layouts import column, row
 from bokeh.models import CustomJS, HoverTool, Panel, Tabs, Button, DateFormatter
 from bokeh.models.widgets import DataTable, TableColumn
-from bokeh.palettes import Colorblind, Bokeh
+from bokeh.palettes import Colorblind, Plasma
 from bokeh.plotting import ColumnDataSource, figure, output_file, show
 from os import makedirs, path
 from pandas import read_csv, to_datetime
@@ -59,7 +59,7 @@ def plotBSRN(filepath, patterns=None, timeStart=None, timeEnd=None):
         formatters={"$x": "datetime"}
     )
     tools = [hover, "pan,wheel_zoom,box_zoom,reset,save,box_select,lasso_select"]
-    colors = (Bokeh[8] + Colorblind[8])[:len(sensors)]
+    colors = (Plasma[8] + Colorblind[8])[:len(sensors)]
 
     # Lines plot
     fig = figure(

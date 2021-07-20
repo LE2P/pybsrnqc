@@ -1,8 +1,11 @@
 from setuptools import setup
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(
     name='pyqcbsrn',
-    version='0.1.4',
+    version='0.1.18',
     description='Package to study BSRN data and their quality control',
     url='https://github.com/LE2P/PyBsrnQC/tree/main/pyqcbsrn',
     author='Maelle Baronnet',
@@ -11,9 +14,16 @@ setup(
     include_package_data=True,
     packages=['pyqcbsrn'],
     install_requires=['pandas',
-                      'numpy'
+                      'numpy',
+                      'matplotlib',
+                      'pvlib',
+                      'bokeh',
+                      'cryptography',
+                      'cassandra_driver',
+                      'pytz'
                       ],
-
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     classifiers=[
         'Development Status :: 1 - Planning',
         'Intended Audience :: Science/Research',
