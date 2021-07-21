@@ -36,13 +36,13 @@ class Conf:
 # Récupération de toutes les données
 
 
-def open_all(path='./dataset/', period=None, select_day=False, select_zenith=True):
+def open_all(path='./dataset', period=None, select_day=False, select_zenith=True):
 
     """ Open as a dataframe the brut data in a repository
     select_day = True means it doesn't take night hours
     select_zenith = True means it computes the SZA in the dataframe
     You have to choose the period of month you want """
-
+    path = path + '/'
     if period is None:
 
         dirs = os.listdir(path)
