@@ -12,6 +12,12 @@ Example :
   - 201907_brut.csv
   - 201908_brut.csv
   - ...
+ 
+ The data has to have at least the following columns in the header :
+ 
+ | timestamp | global2_avg | direct_avg | diffuse_avg | downward_avg | temperature 
+| :---     | :---        | :---     | :---        | :---     | :---        |
+|  `2019-08-01 00:00:00` | `145.1` | `665.300` | `69.340` | `365.65` | `25` | 
   
   
   You can then study this data : 
