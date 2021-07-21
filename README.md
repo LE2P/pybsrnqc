@@ -1,5 +1,5 @@
 # PyBsrnQC
-A library for BSRN QC 
+A library for BSRN Quality Control (QC)
 
 ## Quick use
 
@@ -36,22 +36,120 @@ Example :
   cc.compute('./dataset')
   ```
   
-  ### Quality Control tools
+  ### Quality Control tool
  
-  Use the `qualitycontrol` module. You can use three functions : 
-  - `automatic` which compute the flagged file 
-  - `plot` which plot the data over the period 
-  - `visual` which plot the data and its quality control
+  Use the `automaticQC` module in order to generate the flagged data : 
   
   ```sh
-  from pyqcbsrn import qualitycontrol as qc 
+  from pyqcbsrn.automaticQC import generateQCFiles
   
-  qc.automatic('./dataset/201906_brut.csv')
-  qc.plot('./dataset/201906_brut.csv')
-  qc.visual('./dataset/201906_brut.csv')
+generateQCFiles('./dataset/201908_brut.csv')
   ```
   
-  ## A lot of other functions
+  If you want to visualize the QC of your data and your data use : 
+  - `plotQCFiles`  
+     
+    ```sh
+    from pyqcbsrn.automaticQC import plotQCFiles
+
+    plotQCFiles('./dataset/201908_brut.csv')
+      ```
+  - `plotBSRN` from `visualPlot`
+     ```sh
+      from pyqcbsrn.visualPlot import plotBSRN
+
+      plotBSRN('./dataset/201908_brut.csv')
+     ```
   
-  You can use other functions of the pyqcbsrn packages 
-  For mor details go to : ???
+  ### Visualization tools 
+  
+  You can use other functions of the pyqcbsrn packages to plot and visualize the data.
+  
+  * Access to data 
+    Data are registered in CSV files per month. There is a value each minutes. The names of the files are under the form `AAAAMM_brut.csv`. You can put all your data in a directory.
+
+    First, inquire the path of your directory and select the time period over which you want to observe the data.
+
+    For example if you want to have the data from June 2019 to April 2021 you can write the following code. If the period isn't specified all the files are opened.
+
+    ```sh
+    from pyqcbsrn import open_data as od
+
+    df = od.open_all('./dataset')
+    ```
+
+  * You can plot the data over the time period chosen with the current limits.
+
+
+    ```sh
+
+    import json 
+    from pyqcbsrn import plot_limits as pl
+    from pyqcbsrn import qc_functions as qcf
+
+    # Get data conf from JSON file
+    with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
+    with open(data_path, 'r') as f:
+        coefs = json.load(f)
+
+    # Plot the limits for the QC chosen (here QC1)
+    pl.limit_plot(df, qcf.QC1(), coefs)
+
+    ```
+* Plotting limits with differents coefficient values
+
+  ```sh
+  
+  # Plot the limits for the QC chosen (here QC1)
+  pl.multiplot_coef(df, qcf.QC1(), coefs)
+ 
+  ```
+
+* Plotting the 3D histogram of the data 
+
+  ```sh
+  
+  # Plot the histogram for the QC chosen (here QC1)
+  pl.hist_data(df, qcf.QC1())
+ 
+  ```
+  
+ ### Density analysis
+  
+ * Computation of the data density 
+   Compute the density of each elements over the dataset given
+   ```sh
+  
+    # Calculation of the KDE for a dataset
+    log_kernel = pl.kde_computing(df, qcf.QC1())
+
+    ```
+  
+ * Time series plotting
+   Zoom on a certain period of time : plot on sza or time with density values.
+    
+   ```sh
+  
+   # Time series plotting and density
+   pl.plot_series_kde(df, log_kernel, QC, begin, end)
+   ```
+    
+ * Coefficient indicators 
+   Plot the evolution of certain values according to he coefficient 
+   Return a dataframe containing the indicators values
+    
+   ```sh
+   from pyqcbsrn import coef_study as cs
+    
+   # Indicators plotting
+   df_var = cs.coef_variation(df, log_kernel, qcf.QC1())
+   ```
+    
+ * Getting the coefficient 
+   This function give the best coefficient giving a density threshold defined as the outlier limit.
+   Return the score dataframe and the best score with the linked coefficient.
+    
+   ```sh
+   # Coefficient calculation
+   df_score, score = cs.calc_coef(df, log_kernel, qcf.QC1(), threshold=-15)
+   ```
