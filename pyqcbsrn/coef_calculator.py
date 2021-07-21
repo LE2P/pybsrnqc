@@ -20,8 +20,8 @@ with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
 def compute(path=None, level='level_2'):
 
     # Choosing the QC
-    QC = input('What QC do you want to study : ')
-    level = input('What level do you want to study : ')
+    QC = input('What QC do you want to study ? \n enter QCn where n is the number of the QC chosen \n')
+    level = input('What level do you want to study ? \n enter level_1 for 1rst level \n enter level_2 for 2nd level \n')
 
     if QC == 'QC1':
         QC = qcf.QC1()
