@@ -49,6 +49,7 @@ You can then study this data :
   
 generateQCFiles('./dataset/201908_brut.csv')
   ```
+  Be careful : when you generate your files, it is in the same directory than you brut data. Don't forget to move your generated files if you want to continue to study your brut data.
   
   If you want to visualize the QC of your data and your data use : 
   - `plotQCFiles`  
@@ -64,7 +65,7 @@ generateQCFiles('./dataset/201908_brut.csv')
 
       plotBSRN('./dataset/201908_brut.csv')
      ```
-  
+
   ### Visualization tools 
   
   You can use other functions of the pyqcbsrn packages to plot and visualize the data.
