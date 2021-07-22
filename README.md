@@ -1,6 +1,13 @@
 # PyBsrnQC
 A library for BSRN Quality Control (QC)
 
+## Installation 
+
+Using pip 
+
+```sh
+pip install pyqcbsrn
+```
 ## Quick use
 
 Put your solar data in a directory (`dataset` for example). Data is registered in CSV files, there is a value each minute.
