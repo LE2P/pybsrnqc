@@ -44,7 +44,7 @@ You can then study this data :
   Use the `coef_calculator` module. 
   
   ```sh
-  from pyqcbsrn import coef_calculator as cc 
+  from pybsrnqc import coef_calculator as cc 
   
   name_coef, coef = cc.compute('./dataset')
   ```
@@ -52,15 +52,15 @@ You can then study this data :
   You can then load your coefficient to your configuration file. Thus, your automatic control will take into account the new specific coefficient calculated.
   
   ```sh
-  from pyqcbsrn import config
+  from pybsrnqc import config
   
   config.load(name_coef, coef)
   ```
   If your QC have a maximum and a minimum limit (QC5 for instance) you can use the following code : 
   
   ```sh
-  from pyqcbsrn import coef_calculator as cc 
-  from pyqcbsrn import config
+  from pybsrnqc import coef_calculator as cc 
+  from pybsrnqc import config
   
   name_coef, coef, name_coef_min, coef_min = cc.compute('./dataset')
   config.load(name_coef, coef, name_coef_min, coef_min)
@@ -71,7 +71,7 @@ You can then study this data :
   Use the `automaticQC` module in order to generate the flagged data : 
   
   ```sh
-  from pyqcbsrn.automaticQC import generateQCFiles
+  from pybsrnqc.automaticQC import generateQCFiles
   
 generateQCFiles('./dataset/201908_brut.csv')
   ```
@@ -81,27 +81,27 @@ generateQCFiles('./dataset/201908_brut.csv')
   - `plotQCFiles`  
      
     ```sh
-    from pyqcbsrn.automaticQC import plotQCFiles
+    from pybsrnqc.automaticQC import plotQCFiles
 
     plotQCFiles('./dataset/201908_brut.csv')
       ```
   - `plotBSRN` from `visualPlot`
      ```sh
-      from pyqcbsrn.visualPlot import plotBSRN
+      from pybsrnqc.visualPlot import plotBSRN
 
       plotBSRN('./dataset/201908_brut.csv')
      ```
 
   ### Visualization tools 
   
-  You can use other functions of the pyqcbsrn packages to plot and visualize the data.
+  You can use other functions of the pybsrnqc packages to plot and visualize the data.
   
   * Access to data 
 
     Inquire the path of your directory (you can select the time period over which you want to observe the data). If the period isn't specified all the files are opened.
 
     ```sh
-    from pyqcbsrn import open_data as od
+    from pybsrnqc import open_data as od
 
     df = od.open_all('./dataset')
     ```
@@ -119,11 +119,11 @@ generateQCFiles('./dataset/201908_brut.csv')
     ```sh
 
     import json 
-    from pyqcbsrn import plot_limits as pl
-    from pyqcbsrn import qc_functions as qcf
+    from pybsrnqc import plot_limits as pl
+    from pybsrnqc import qc_functions as qcf
 
     # Get data conf from JSON file
-    with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
+    with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         coefs = json.load(f)
 
@@ -174,7 +174,7 @@ generateQCFiles('./dataset/201908_brut.csv')
    Return a dataframe containing the indicators values
     
    ```sh
-   from pyqcbsrn import coef_study as cs
+   from pybsrnqc import coef_study as cs
     
    # Indicators plotting
    df_var = cs.coef_variation(df, log_kernel, qcf.QC1())

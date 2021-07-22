@@ -15,7 +15,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 # -----------------------------------------------------------------------------------------------------------
 # Initialisation of a set of coefficients
 # Get data conf from JSON file
-with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
+with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         dic_coefs = json.load(f)
 
