@@ -3,28 +3,32 @@ A library for BSRN Quality Control (QC)
 
 ## Quick use
 
-Put your solar data in a directory (`dataset`) for example. Under the form `YYYYMM_brut.csv`.  
+Put your solar data in a directory (`dataset` for example). Data is registered in CSV files, there is a value each minute.
 
-Example : 
-
-- dataset/
-  - 201906_brut.csv
-  - 201907_brut.csv
-  - 201908_brut.csv
-  - ...
- 
- The data has to have at least the following columns in the header :
+The data has to have at least the following columns in the header :
  
  | timestamp | global2_avg | direct_avg | diffuse_avg | downward_avg | temperature 
 | :---     | :---        | :---     | :---        | :---     | :---        |
 |  `2019-08-01 00:00:00` | `145.1` | `665.300` | `69.340` | `365.65` | `25` | 
   
+
+__Example :__
+
+Data under the form `YYYYMM_brut.csv` with a csv file per month gathered in a directory `dataset`.
+```sh
+- dataset/
+  - 201906_brut.csv
+  - 201907_brut.csv
+  - 201908_brut.csv
+  - ...
+  ```
+
   
-  You can then study this data : 
+You can then study this data : 
   
-  - Calculate the BSRN coefficient of a certain Quality Control chosen 
-  - Create the flagged data file associated with your datas and the coefficients selected
-  - Visualize the datas 
+- Calculate the BSRN coefficient of a certain Quality Control chosen 
+- Create the flagged data file associated with your datas and the coefficients selected
+- Visualize the datas 
  
  ### BSRN coefficient calculation 
  
@@ -66,17 +70,21 @@ generateQCFiles('./dataset/201908_brut.csv')
   You can use other functions of the pyqcbsrn packages to plot and visualize the data.
   
   * Access to data 
-    Data are registered in CSV files per month. There is a value each minutes. The names of the files are under the form `AAAAMM_brut.csv`. You can put all your data in a directory.
 
-    First, inquire the path of your directory and select the time period over which you want to observe the data.
-
-    For example if you want to have the data from June 2019 to April 2021 you can write the following code. If the period isn't specified all the files are opened.
+    Inquire the path of your directory (you can select the time period over which you want to observe the data). If the period isn't specified all the files are opened.
 
     ```sh
     from pyqcbsrn import open_data as od
 
     df = od.open_all('./dataset')
     ```
+     If you want to specify the period, put your data under the form `YYYYMM_brut.csv` and inquire the period as`[YYYYMM, YYYYMM]`. 
+
+     ```sh
+      # Example to select data from June to December 2019
+
+      df = od.open_all('./dataset',period=['201906','201912'])
+     ```
 
   * You can plot the data over the time period chosen with the current limits.
 
