@@ -44,7 +44,7 @@ def plotBSRN(filepath, patterns=None, timeStart=None, timeEnd=None):
     )
 
     # Selection
-    with importlib.resources.path("pyqcbsrn", "callbackSelect.js") as data_path:
+    with importlib.resources.path("pybsrnqc", "callbackSelect.js") as data_path:
         f = open(data_path, "r")
     js_code = f.read()
     callback = CustomJS(args=dict(bsrnData=bsrnData, bsrnSelect=bsrnSelect), code=js_code)
@@ -87,7 +87,7 @@ def plotBSRN(filepath, patterns=None, timeStart=None, timeEnd=None):
 
     # Download button
     button_flag = Button(label="Generate data file", button_type="danger")
-    with importlib.resources.path("pyqcbsrn", "callbackSave.js") as data_path:
+    with importlib.resources.path("pybsrnqc", "callbackSave.js") as data_path:
         f = open(data_path, "r")
     js_code = f.read()
     callback = CustomJS(args=dict(bsrnSelect=bsrnSelect), code=js_code)

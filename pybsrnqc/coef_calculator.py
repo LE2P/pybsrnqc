@@ -1,10 +1,10 @@
 """ Module computing the best coefficient of a QC automatically"""
 
 # Required imports
-from pyqcbsrn import open_data as od
-from pyqcbsrn import qc_functions as qcf
-from pyqcbsrn import plot_limits as pl
-from pyqcbsrn import coef_study as cs
+from pybsrnqc import open_data as od
+from pybsrnqc import qc_functions as qcf
+from pybsrnqc import plot_limits as pl
+from pybsrnqc import coef_study as cs
 
 import importlib.resources
 import json
@@ -12,7 +12,7 @@ import json
 
 # Coefficients initialisation
 # Get data conf from JSON file
-with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
+with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         dic_coefs = json.load(f)
 

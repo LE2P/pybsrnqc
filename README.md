@@ -8,7 +8,7 @@ Repository github with the source code : https://github.com/LE2P/PyBsrnQC
 Using pip 
 
 ```sh
-pip install pyqcbsrn
+pip install pybsrnqc
 ```
 ## Quick use
 

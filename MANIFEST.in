@@ -1,6 +1,6 @@
 include README.md
 include LICENSE.txt
-include pyqcbsrn/autoqc_conf.json
-include pyqcbsrn/qcrad_conf.json
-include pyqcbsrn/callbackSave.js
-include pyqcbsrn/callbackSelect.js
+include pybsrnqc/autoqc_conf.json
+include pybsrnqc/qcrad_conf.json
+include pybsrnqc/callbackSave.js
+include pybsrnqc/callbackSelect.js

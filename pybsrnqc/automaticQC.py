@@ -11,15 +11,15 @@ from bokeh.layouts import column
 from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
 from bokeh.plotting import figure, output_file, show
-from pyqcbsrn import utils
-from pyqcbsrn import qc_functions as qcf
+from pybsrnqc import utils
+from pybsrnqc import qc_functions as qcf
 
 # Get data conf from JSON files
-with importlib.resources.path("pyqcbsrn", "qcrad_conf.json") as data_path:
+with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         coefs = json.load(f)
 
-with importlib.resources.path("pyqcbsrn", "autoqc_conf.json") as data_path:
+with importlib.resources.path("pybsrnqc", "autoqc_conf.json") as data_path:
     with open(data_path, 'r') as f:
         loaded_json = json.load(f)
 

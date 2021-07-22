@@ -4,15 +4,15 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
-    name='pyqcbsrn',
+    name='pybsrnqc',
     version='0.1.31',
     description='Package to study BSRN data and their quality control',
-    url='https://github.com/LE2P/PyBsrnQC/tree/main/pyqcbsrn',
+    url='https://github.com/LE2P/PyBsrnQC/tree/main/pybsrnqc',
     author='Maelle Baronnet',
     author_email='maelle.baronnet@gmail.com',
     license='MIT',
     include_package_data=True,
-    packages=['pyqcbsrn'],
+    packages=['pybsrnqc'],
     install_requires=['pandas',
                       'numpy',
                       'matplotlib',
