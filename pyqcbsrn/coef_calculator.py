@@ -97,4 +97,7 @@ def compute(path=None, level='level_2'):
     # Plotting the result
     pl.plot_kde(df, log_kernel, QC, dic_coefs, level=level)
 
-    return QC.coefficients[level], float(score[QC.coefficients[level]])
+    if QC.vary == 'downward_avg':
+        return QC.coefficients[level], float(score[QC.coefficients[level]]), QC.coefficients[level + '_min'], float(score[QC.coefficients[level + '_min']])
+    else:
+        return QC.coefficients[level], float(score[QC.coefficients[level]])

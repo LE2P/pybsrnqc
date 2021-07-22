@@ -37,7 +37,24 @@ You can then study this data :
   ```sh
   from pyqcbsrn import coef_calculator as cc 
   
-  cc.compute('./dataset')
+  name_coef, coef = cc.compute('./dataset')
+  ```
+  
+  You can then load your coefficient to your configuration file. Thus, your automatic control will take into account the new specific coefficient calculated.
+  
+  ```sh
+  from pyqcbsrn import config
+  
+  config.load(name_coef, coef)
+  ```
+  If your QC have a maximum and a minimum limit (QC5 for instance) you can use the following code : 
+  
+  ```sh
+  from pyqcbsrn import coef_calculator as cc 
+  from pyqcbsrn import config
+  
+  name_coef, coef, name_coef_min, coef_min = cc.compute('./dataset')
+  config.load(name_coef, coef, name_coef_min, coef_min)
   ```
   
   ### Quality Control tool
