@@ -97,4 +97,4 @@ def compute(path=None, level='level_2'):
     # Plotting the result
     pl.plot_kde(df, log_kernel, QC, dic_coefs, level=level)
 
-    return float(score[QC.coefficients[level]])
+    return QC.coefficients[level], float(score[QC.coefficients[level]])
