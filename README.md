@@ -1,6 +1,8 @@
 # PyBsrnQC
 A library for BSRN Quality Control (QC)
 
+Repository github with the source code : https://github.com/LE2P/PyBsrnQC
+
 ## Installation 
 
 Using pip 
