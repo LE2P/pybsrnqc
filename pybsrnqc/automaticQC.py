@@ -42,17 +42,17 @@ def fix_values(row: OrderedDict):
     GSW, Dif, DirN, LWdn, Ta, Td = None, None, None, None, None, None
     # check variables name on input file
     try:
-        timestamp = row[conf.TIMESTAMP_NAME]
-        if conf.GSW_NAME in row and utils.isfloat(row[conf.GSW_NAME]):
-            GSW = float(row[conf.GSW_NAME])
-        if conf.DIF_NAME in row and utils.isfloat(row[conf.DIF_NAME]):
-            Dif = float(row[conf.DIF_NAME])
-        if conf.DIR_NAME in row and utils.isfloat(row[conf.DIR_NAME]):
-            DirN = float(row[conf.DIR_NAME])
-        if conf.LWDN_NAME in row and utils.isfloat(row[conf.LWDN_NAME]):
-            LWdn = float(row[conf.LWDN_NAME])
-        if conf.TA_NAME in row and utils.isfloat(row[conf.TA_NAME]):
-            Ta = float(row[conf.TA_NAME]) + 273.15
+        timestamp = row[Conf.TIMESTAMP_NAME]
+        if Conf.GSW_NAME in row and utils.isfloat(row[Conf.GSW_NAME]):
+            GSW = float(row[Conf.GSW_NAME])
+        if Conf.DIF_NAME in row and utils.isfloat(row[Conf.DIF_NAME]):
+            Dif = float(row[Conf.DIF_NAME])
+        if Conf.DIR_NAME in row and utils.isfloat(row[Conf.DIR_NAME]):
+            DirN = float(row[Conf.DIR_NAME])
+        if Conf.LWDN_NAME in row and utils.isfloat(row[Conf.LWDN_NAME]):
+            LWdn = float(row[Conf.LWDN_NAME])
+        if Conf.TA_NAME in row and utils.isfloat(row[Conf.TA_NAME]):
+            Ta = float(row[Conf.TA_NAME]) + 273.15
     except KeyError as e:
         print('KeyError: %s' % str(e))
     except ValueError as valueError:
@@ -116,7 +116,7 @@ def generateQCFiles(filepath):
     # load input file into a DataFrame
     file_brut = pd.read_csv(FILE_BRUT)
     timestamp_list = file_brut.timestamp.to_list()
-    zenith_serie = utils.getZenith(timestamp_list, conf.LAT, conf.LON, conf.ALT)
+    zenith_serie = utils.getZenith(timestamp_list, Conf.LAT, Conf.LON, Conf.ALT)
     # process input file
     datapoints_qcrad, datapoints_aqc = [], []
     with open(FILE_BRUT, 'r') as fileIn:
