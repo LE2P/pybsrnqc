@@ -143,8 +143,11 @@ def plotQCFiles(filepath):
     """Plot the input file"""
     # init
     csv_name = filepath
-    yearMonth = (((os.path.splitext((csv_name))[0]).split('/'))[-1]).split('_')[0]
-    typeFile = (((os.path.splitext((csv_name))[0]).split('/'))[-1]).split('_')[1]
+    df = pd.read_csv(filepath)
+    year = df['timestamp'][0][:4]
+    month = df['timestamp'][0][5:7]
+    yearMonth = year + month
+    typeFile = 'brut'
     # create directory if it necessary
     Path("plot/" + yearMonth).mkdir(parents=True, exist_ok=True)
     chart_name = 'plot/' + yearMonth + '/' + typeFile + '.html'
