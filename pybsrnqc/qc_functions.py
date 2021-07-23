@@ -128,8 +128,8 @@ class QC2:
     def f(self, SZA, Dif, coefs):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1 = ref.SOLAR_CONSTANT * coefs['BSRN']['C2'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 30
-        l2 = ref.SOLAR_CONSTANT * coefs['BSRN']['D2'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 35
+        l1 = ref.SOLAR_CONSTANT * coefs['COEF']['C2'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 30
+        l2 = ref.SOLAR_CONSTANT * coefs['COEF']['D2'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 35
         l_bsrn = ref.SOLAR_CONSTANT * 0.95 * math.pow(math.cos(math.radians(SZA)), 1.2) + 50
 
         return l1, l2, l_bsrn
@@ -387,11 +387,11 @@ class QC10:
         """LWdn to Ta test"""
         if all(v is not None for v in [LWdn, Ta]):
             if QC19(Ta) == 0:
-                if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coefs['BSRN']['D12'])):
+                if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coefs['COEF']['D12'])):
                     return 4
                 if (LWdn < (coefs['COEF']['D11'] * ref.BOLTZMANN * math.pow(Ta, 4))):
                     return 3
-                if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coefs['BSRN']['C12'])):
+                if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coefs['COEF']['C12'])):
                     return 2
                 if (LWdn < (coefs['COEF']['C11'] * ref.BOLTZMANN * math.pow(Ta, 4))):
                     return 1
