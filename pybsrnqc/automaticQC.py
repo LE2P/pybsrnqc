@@ -22,7 +22,7 @@ with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
 # Configuration of some static variables
 
 
-class conf:
+class Conf:
     """
     BSRN station, database and headers from input file configurations
     """
