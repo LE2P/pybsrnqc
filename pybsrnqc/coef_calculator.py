@@ -89,10 +89,10 @@ def compute(path=None, level='level_2'):
 
     # Charging the new coeff
     if QC.vary == 'downward_avg':
-        dic_coefs['BSRN'][QC.coefficients[level]] = float(score[QC.coefficients[level]])
-        dic_coefs['BSRN'][QC.coefficients[level + '_min']] = float(score_min[QC.coefficients[level + '_min']])
+        dic_coefs['COEF'][QC.coefficients[level]] = float(score[QC.coefficients[level]])
+        dic_coefs['COEF'][QC.coefficients[level + '_min']] = float(score_min[QC.coefficients[level + '_min']])
     else:
-        dic_coefs['BSRN'][QC.coefficients[level]] = float(score[QC.coefficients[level]])
+        dic_coefs['COEF'][QC.coefficients[level]] = float(score[QC.coefficients[level]])
 
     # Plotting the result
     pl.plot_kde(df, log_kernel, QC, dic_coefs, level=level)

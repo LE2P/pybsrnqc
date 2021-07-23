@@ -10,8 +10,9 @@ import base64
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 from pytz import timezone
+
 
 class bcolors:
     """Colors"""
@@ -64,14 +65,14 @@ def decryption(loaded_json):
 def raiseError(loaded_json, cluster, ncfile, exception, msgErr):
     """when an error is raised : close properly the cluster and ncfile, print error message and quit the program"""
     if exception:
-        print(bcolors.HEADER+'Caught this exception: '+repr(exception)+bcolors.ENDC)
+        print(bcolors.HEADER + 'Caught this exception: ' + repr(exception) + bcolors.ENDC)
     elif msgErr:
-        print(bcolors.FAIL+"ERROR!"+bcolors.ENDC)
-        print(bcolors.FAIL+msgErr+bcolors.ENDC)
+        print(bcolors.FAIL + "ERROR!" + bcolors.ENDC)
+        print(bcolors.FAIL + msgErr + bcolors.ENDC)
     # Catch error
     listError = ['NoHostAvailable', 'KeyError', 'ValueError', 'IndexError']
     if str(exception.__class__.__name__) in listError:
-        print(bcolors.FAIL+msgErr+""+bcolors.ENDC)
+        print(bcolors.FAIL + msgErr + "" + bcolors.ENDC)
     # Close properly
     if ncfile:
         # remove text file
@@ -79,12 +80,12 @@ def raiseError(loaded_json, cluster, ncfile, exception, msgErr):
         DATA_CSV_PATH = loaded_json['path']['DATA_CSV_PATH']
         csvFilePath = remove_prefix(ncfile.filepath(), DATA_PATH)
         if csvFilePath is not False:
-            csvFilePath = re.sub(r'.nc', '.csv', DATA_CSV_PATH+csvFilePath)
-            os.system('rm '+csvFilePath)
-            print("Remove csv file: \""+csvFilePath)
+            csvFilePath = re.sub(r'.nc', '.csv', DATA_CSV_PATH + csvFilePath)
+            os.system('rm ' + csvFilePath)
+            print("Remove csv file: \"" + csvFilePath)
         # remove NetCDF file
-        os.system('rm '+ncfile.filepath())
-        print("Remove NetCDF file: \""+ncfile.filepath())
+        os.system('rm ' + ncfile.filepath())
+        print("Remove NetCDF file: \"" + ncfile.filepath())
         ncfile.close()
 
     if cluster:
@@ -95,7 +96,7 @@ def raiseError(loaded_json, cluster, ncfile, exception, msgErr):
 
 def getStationName(session, transaction_id):
     """get name of the station from the id transaction"""
-    rows = session.execute("SELECT name FROM transaction WHERE transaction_id="+str(transaction_id))
+    rows = session.execute("SELECT name FROM transaction WHERE transaction_id=" + str(transaction_id))
     for transaction in rows:
         return transaction.name
 
@@ -109,7 +110,7 @@ def getMetaTrans(session, transaction_id):
     key = ['transaction_id', 'station_name']
     value = [transaction_id, station_name]
     # Make dictionnary of metadata
-    rows = session.execute("SELECT * FROM meta_search WHERE transaction_id="+str(transaction_id)+" LIMIT 2")
+    rows = session.execute("SELECT * FROM meta_search WHERE transaction_id=" + str(transaction_id) + " LIMIT 2")
     for meta_search in rows:
         for meta_list in meta_search:
             if isinstance(meta_list, cassandra.util.OrderedMapSerializedKey):
@@ -138,8 +139,8 @@ def getSensorDataUTC(session, transaction_id, sensor_id, startDay, endDay, timeL
     year = startDay_date.year
     tamp = startDay_date
     # Make the request
-    rows = session.execute("SELECT date, sensor_id, value FROM sensor_data WHERE transaction_id="+str(transaction_id)+" \
-    AND sensor_id='"+sensor_id+"' AND year="+str(year)+" AND date>='"+startDay+"' AND date<='"+endDay+"'")
+    rows = session.execute("SELECT date, sensor_id, value FROM sensor_data WHERE transaction_id=" + str(transaction_id) + " \
+    AND sensor_id='" + sensor_id + "' AND year=" + str(year) + " AND date>='" + startDay + "' AND date<='" + endDay + "'")
     # Get the last date of data available in the database
     lastSensorDate = rows[-1].date
     # Create data list

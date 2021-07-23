@@ -69,30 +69,30 @@ def limit_plot(df, QC, coefs, save=False, level='all', display=True,
 
     if level == 'all':
         plt.scatter(val1_var, lim_l1, marker='+', color='green',
-                    label=f"1rst level limit - {coefs['BSRN'][QC.coefficients['level_1']]}", s=1)
+                    label=f"1rst level limit - {coefs['COEF'][QC.coefficients['level_1']]}", s=1)
         plt.scatter(val1_var, lim_l2, marker='+', color='blue',
-                    label=f"2nd level limit - {coefs['BSRN'][QC.coefficients['level_2']]}", s=1)
+                    label=f"2nd level limit - {coefs['COEF'][QC.coefficients['level_2']]}", s=1)
         plt.scatter(val1_var, lim_bsrn, marker='+', color='red',
                     label="BSRN  limit", s=1)
     if level == 'level_1':
         plt.scatter(val1_var, lim_l1, marker='+', color='green',
-                    label=f"1rst level limit - {coefs['BSRN'][QC.coefficients['level_1']]}", s=1)
+                    label=f"1rst level limit - {coefs['COEF'][QC.coefficients['level_1']]}", s=1)
     if level == 'level_2':
         plt.scatter(val1_var, lim_l2, marker='+', color='blue',
-                    label=f"2nd level limit - {coefs['BSRN'][QC.coefficients['level_2']]}", s=1)
+                    label=f"2nd level limit - {coefs['COEF'][QC.coefficients['level_2']]}", s=1)
     if level == 'level_bsrn':
         plt.scatter(val1_var, lim_bsrn, marker='+', color='red', label="BSRN  limit", s=1)
 
     if QC.vary == 'downward_avg':
 
         if level == 'all':
-            plt.scatter(val1_var, lim_l1_min, marker='+', color='lightgreen', label=f"1rst level limit - {coefs['BSRN'][QC.coefficients['level_1_min']]}", s=1)
-            plt.scatter(val1_var, lim_l2_min, marker='+', color='lightblue', label=f"2nd level limit - {coefs['BSRN'][QC.coefficients['level_2_min']]}", s=1)
+            plt.scatter(val1_var, lim_l1_min, marker='+', color='lightgreen', label=f"1rst level limit - {coefs['COEF'][QC.coefficients['level_1_min']]}", s=1)
+            plt.scatter(val1_var, lim_l2_min, marker='+', color='lightblue', label=f"2nd level limit - {coefs['COEF'][QC.coefficients['level_2_min']]}", s=1)
             plt.scatter(val1_var, lim_bsrn_min, marker='+', color='lightcoral', label="BSRN  limit", s=1)
         if level == 'level_1':
-            plt.scatter(val1_var, lim_l1_min, marker='+', color='lightgreen', label=f"1rst level limit - {coefs['BSRN'][QC.coefficients['level_1_min']]}", s=1)
+            plt.scatter(val1_var, lim_l1_min, marker='+', color='lightgreen', label=f"1rst level limit - {coefs['COEF'][QC.coefficients['level_1_min']]}", s=1)
         if level == 'level_2':
-            plt.scatter(val1_var, lim_l2_min, marker='+', color='lightblue', label=f"2nd level limit - {coefs['BSRN'][QC.coefficients['level_2_min']]}", s=1)
+            plt.scatter(val1_var, lim_l2_min, marker='+', color='lightblue', label=f"2nd level limit - {coefs['COEF'][QC.coefficients['level_2_min']]}", s=1)
         if level == 'level_bsrn':
             plt.scatter(val1_var, lim_bsrn_min, marker='+', color='lightcoral', label="BSRN  limit", s=1)
 
@@ -124,7 +124,7 @@ def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], 
         # We compute the considered coefficient
 
         new_coef = coefs.copy()
-        new_coef['BSRN'][QC.coefficients[level]] = v
+        new_coef['COEF'][QC.coefficients[level]] = v
 
         # We plot for this coefficient
 
@@ -137,7 +137,7 @@ def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], 
             # We compute the considered coefficient
 
             new_coef = coefs.copy()
-            new_coef['BSRN'][QC.coefficients[level_min]] = v
+            new_coef['COEF'][QC.coefficients[level_min]] = v
 
             # We plot for this coefficient
 

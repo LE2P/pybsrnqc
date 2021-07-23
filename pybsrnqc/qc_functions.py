@@ -46,8 +46,8 @@ class QC1:
     def f(self, SZA, GSW, coefs):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1 = ref.SOLAR_CONSTANT * coefs['BSRN']['C1'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 50
-        l2 = ref.SOLAR_CONSTANT * coefs['BSRN']['D1'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 55
+        l1 = ref.SOLAR_CONSTANT * coefs['COEF']['C1'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 50
+        l2 = ref.SOLAR_CONSTANT * coefs['COEF']['D1'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 55
         l_bsrn = ref.SOLAR_CONSTANT * 1.5 * math.pow(math.cos(math.radians(SZA)), 1.2) + 100
 
         return l1, l2, l_bsrn
@@ -62,9 +62,9 @@ class QC1:
             if SZA >= 0 and SZA <= 90:  # cannot have float exponent of negative value
                 if(GSW > (ref.SOLAR_CONSTANT * 1.5 * math.pow(math.cos(math.radians(SZA)), 1.2)) + 100):
                     return 6
-                if(GSW > (ref.SOLAR_CONSTANT * coefs['BSRN']['D1'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 55):
+                if(GSW > (ref.SOLAR_CONSTANT * coefs['COEF']['D1'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 55):
                     return 4
-                if(GSW > (ref.SOLAR_CONSTANT * coefs['BSRN']['C1'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 50):
+                if(GSW > (ref.SOLAR_CONSTANT * coefs['COEF']['C1'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 50):
                     return 2
             else:
                 return -1
@@ -144,9 +144,9 @@ class QC2:
             if SZA >= 0 and SZA <= 90:  # cannot have float exponent of negative value
                 if(Dif > (ref.SOLAR_CONSTANT * 0.95 * math.pow(math.cos(math.radians(SZA)), 1.2)) + 50):
                     return 6
-                if(Dif > (ref.SOLAR_CONSTANT * coefs['BSRN']['D2'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 35):
+                if(Dif > (ref.SOLAR_CONSTANT * coefs['COEF']['D2'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 35):
                     return 4
-                if(Dif > (ref.SOLAR_CONSTANT * coefs['BSRN']['C2'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 30):
+                if(Dif > (ref.SOLAR_CONSTANT * coefs['COEF']['C2'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 30):
                     return 2
             else:
                 return -1
@@ -210,8 +210,8 @@ class QC3:
     def f(self, SZA, DirN, coefs):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1 = ref.SOLAR_CONSTANT * coefs['BSRN']['C3'] * math.pow(math.cos(math.radians(SZA)), 0.2) + 10
-        l2 = ref.SOLAR_CONSTANT * coefs['BSRN']['D3'] * math.pow(math.cos(math.radians(SZA)), 0.2) + 15
+        l1 = ref.SOLAR_CONSTANT * coefs['COEF']['C3'] * math.pow(math.cos(math.radians(SZA)), 0.2) + 10
+        l2 = ref.SOLAR_CONSTANT * coefs['COEF']['D3'] * math.pow(math.cos(math.radians(SZA)), 0.2) + 15
         l_bsrn = ref.SOLAR_CONSTANT
 
         return l1, l2, l_bsrn
@@ -226,9 +226,9 @@ class QC3:
             if (DirN > ref.SOLAR_CONSTANT):
                 return 6
             if SZA >= 0 and SZA <= 90:  # cannot have float exponent of negative value
-                if(DirN > (ref.SOLAR_CONSTANT * coefs['BSRN']['D3'] * math.pow(math.cos(math.radians(SZA)), 0.2)) + 15):
+                if(DirN > (ref.SOLAR_CONSTANT * coefs['COEF']['D3'] * math.pow(math.cos(math.radians(SZA)), 0.2)) + 15):
                     return 4
-                if(DirN > (ref.SOLAR_CONSTANT * coefs['BSRN']['C3'] * math.pow(math.cos(math.radians(SZA)), 0.2)) + 10):
+                if(DirN > (ref.SOLAR_CONSTANT * coefs['COEF']['C3'] * math.pow(math.cos(math.radians(SZA)), 0.2)) + 10):
                     return 2
             else:
                 return -1
@@ -293,12 +293,12 @@ class QC5:
     def f(self, SZA, LWdn, coefs):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1_max = coefs['BSRN']['C6']
-        l2_max = coefs['BSRN']['D6']
+        l1_max = coefs['COEF']['C6']
+        l2_max = coefs['COEF']['D6']
         l_bsrn_max = 700
 
-        l1_min = coefs['BSRN']['C5']
-        l2_min = coefs['BSRN']['D5']
+        l1_min = coefs['COEF']['C5']
+        l2_min = coefs['COEF']['D5']
         l_bsrn_min = 40
 
         return l1_max, l2_max, l_bsrn_max, l1_min, l2_min, l_bsrn_min
@@ -310,13 +310,13 @@ class QC5:
                 return 6
             if (LWdn < 40):
                 return 5
-            if (LWdn > coefs['BSRN']['D6']):
+            if (LWdn > coefs['COEF']['D6']):
                 return 4
-            if (LWdn < coefs['BSRN']['D5']):
+            if (LWdn < coefs['COEF']['D5']):
                 return 3
-            if (LWdn > coefs['BSRN']['C6']):
+            if (LWdn > coefs['COEF']['C6']):
                 return 2
-            if (LWdn < coefs['BSRN']['C5']):
+            if (LWdn < coefs['COEF']['C5']):
                 return 1
         else:
             return -1
@@ -373,12 +373,12 @@ class QC10:
     def f(self, Ta, LWdn, coefs):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1_max = ref.BOLTZMANN * math.pow(Ta + 273.15, 4) + coefs['BSRN']['C12']
-        l2_max = ref.BOLTZMANN * math.pow(Ta + 273.15, 4) + coefs['BSRN']['D12']
+        l1_max = ref.BOLTZMANN * math.pow(Ta + 273.15, 4) + coefs['COEF']['C12']
+        l2_max = ref.BOLTZMANN * math.pow(Ta + 273.15, 4) + coefs['COEF']['D12']
         l_bsrn_max = 700
 
-        l1_min = coefs['BSRN']['C11'] * ref.BOLTZMANN * math.pow(Ta + 274.15, 4)
-        l2_min = coefs['BSRN']['D11'] * ref.BOLTZMANN * math.pow(Ta + 274.15, 4)
+        l1_min = coefs['COEF']['C11'] * ref.BOLTZMANN * math.pow(Ta + 274.15, 4)
+        l2_min = coefs['COEF']['D11'] * ref.BOLTZMANN * math.pow(Ta + 274.15, 4)
         l_bsrn_min = 40
 
         return l1_max, l2_max, l_bsrn_max, l1_min, l2_min, l_bsrn_min
@@ -389,11 +389,11 @@ class QC10:
             if QC19(Ta) == 0:
                 if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coefs['BSRN']['D12'])):
                     return 4
-                if (LWdn < (coefs['BSRN']['D11'] * ref.BOLTZMANN * math.pow(Ta, 4))):
+                if (LWdn < (coefs['COEF']['D11'] * ref.BOLTZMANN * math.pow(Ta, 4))):
                     return 3
                 if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coefs['BSRN']['C12'])):
                     return 2
-                if (LWdn < (coefs['BSRN']['C11'] * ref.BOLTZMANN * math.pow(Ta, 4))):
+                if (LWdn < (coefs['COEF']['C11'] * ref.BOLTZMANN * math.pow(Ta, 4))):
                     return 1
             else:
                 return -1

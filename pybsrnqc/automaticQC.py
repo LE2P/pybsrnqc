@@ -19,7 +19,7 @@ with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         coefs = json.load(f)
 
-with importlib.resources.path("pybsrnqc", "autoqc_conf.json") as data_path:
+with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         loaded_json = json.load(f)
 

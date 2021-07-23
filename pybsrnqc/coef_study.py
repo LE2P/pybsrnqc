@@ -70,7 +70,7 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
         # Generation of the new coefficients
 
         dic = dic_coefs.copy()
-        dic['BSRN'][coef_name] = coef
+        dic['COEF'][coef_name] = coef
 
         # Generation of the outliers according to the limits linked to the coefficients
 
@@ -98,7 +98,7 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
 
             # Generation of the new coefficients
             dic = dic_coefs.copy()
-            dic['BSRN'][coef_name_min] = coef_min
+            dic['COEF'][coef_name_min] = coef_min
 
             # Generation of the outliers according to the limits linked to the coefficients
             df_lim = df_min.copy()
@@ -281,7 +281,7 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
     if QC.name == 'QC3' or QC.name == 'QC10':
         # We precise that points under a certain limit are not ouliers
         dic = dic_coefs.copy()
-        dic['BSRN'][coef_name] = 0.6
+        dic['COEF'][coef_name] = 0.6
 
         # df_lim['lim_mid'] = QC.calc_lim(df, coefs=dic)[1]
 
@@ -315,7 +315,7 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
 
         # Generation of coefficient
         dic = dic_coefs.copy()
-        dic['BSRN'][coef_name] = coef
+        dic['COEF'][coef_name] = coef
 
         # Generation of the outliers according to the equations and the density
 
@@ -344,7 +344,7 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
             # Generation of coefficient
 
             dic = dic_coefs.copy()
-            dic['BSRN'][coef_name_min] = coef_min
+            dic['COEF'][coef_name_min] = coef_min
 
             # Generation of the outliers according to the equations and the density
 

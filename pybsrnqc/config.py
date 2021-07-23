@@ -14,10 +14,10 @@ def load(name_coef, coef, name_coef_min=None, coef_min=None):
         with open(data_path, 'w') as open_file:
             open_file.writelines('\n'.join(json_lines))
 
-    if name_coef_min is not None: 
-        dic_coefs['BSRN'][name_coef_min] = coef_min
+    if name_coef_min is not None:
+        dic_coefs['COEF'][name_coef_min] = coef_min
 
-    dic_coefs['BSRN'][name_coef] = coef
+    dic_coefs['COEF'][name_coef] = coef
 
     with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
         with open(data_path, 'w') as open_file:
