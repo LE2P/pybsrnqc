@@ -119,6 +119,7 @@ generateQCFiles('./dataset/201908_brut.csv')
     ```sh
 
     import json 
+    import importlib.resources 
     from pybsrnqc import plot_limits as pl
     from pybsrnqc import qc_functions as qcf
 

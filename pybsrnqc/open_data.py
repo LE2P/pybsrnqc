@@ -14,7 +14,6 @@ from pybsrnqc.automaticQC import Conf
 
 
 def open_all(path='./dataset', period=None, select_day=False, select_zenith=True):
-
     """ Open as a dataframe the brut data in a repository
     select_day = True means it doesn't take night hours
     select_zenith = True means it computes the SZA in the dataframe
@@ -66,7 +65,8 @@ def open_all(path='./dataset', period=None, select_day=False, select_zenith=True
     # Zenith computation
 
     timestamp_list = df_fus.timestamp.to_list()
-    zenith_serie = utils.getZenith(timestamp_list, Conf.LAT, Conf.LON, Conf.ALT)
+    zenith_serie = utils.getZenith(
+        timestamp_list, Conf.LAT, Conf.LON, Conf.ALT)
     df_fus['SZA'] = list(zenith_serie)
 
     if select_zenith:
