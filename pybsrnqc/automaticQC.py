@@ -17,10 +17,6 @@ from pybsrnqc import qc_functions as qcf
 # Get data conf from JSON files
 with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
-        coefs = json.load(f)
-
-with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
-    with open(data_path, 'r') as f:
         loaded_json = json.load(f)
 
 # Configuration of some static variables
@@ -30,16 +26,16 @@ class conf:
     """
     BSRN station, database and headers from input file configurations
     """
-    LAT = loaded_json['station']['LAT']
-    LON = loaded_json['station']['LON']
-    ALT = loaded_json['station']['ALT']
-    TZ = loaded_json['station']['TZ']
-    TIMESTAMP_NAME = loaded_json['header']['TIMESTAMP_NAME']
-    GSW_NAME = loaded_json['header']['GSW_NAME']
-    DIF_NAME = loaded_json['header']['DIF_NAME']
-    DIR_NAME = loaded_json['header']['DIR_NAME']
-    LWDN_NAME = loaded_json['header']['LWDN_NAME']
-    TA_NAME = loaded_json['header']['TA_NAME']
+    LAT = loaded_json['STATION']['LAT']
+    LON = loaded_json['STATION']['LON']
+    ALT = loaded_json['STATION']['ALT']
+    TZ = loaded_json['STATION']['TZ']
+    TIMESTAMP_NAME = loaded_json['HEADER']['TIMESTAMP_NAME']
+    GSW_NAME = loaded_json['HEADER']['GSW_NAME']
+    DIF_NAME = loaded_json['HEADER']['DIF_NAME']
+    DIR_NAME = loaded_json['HEADER']['DIR_NAME']
+    LWDN_NAME = loaded_json['HEADER']['LWDN_NAME']
+    TA_NAME = loaded_json['HEADER']['TA_NAME']
 
 
 def fix_values(row: OrderedDict):
@@ -71,11 +67,11 @@ def getRow(row: OrderedDict, zenith_serie):
     # application of data quality control
     qc_result = {
         "timestamp": timestamp,
-        "QC1": qcf.QC1().lab(SZA, GSW, coefs),
-        "QC2": qcf.QC2().lab(SZA, Dif, coefs),
-        "QC3": qcf.QC3().lab(SZA, DirN, coefs),
-        "QC5": qcf.QC5().lab(SZA, LWdn, coefs),
-        "QC10": qcf.QC10().lab(Ta, LWdn, coefs),
+        "QC1": qcf.QC1().lab(SZA, GSW, loaded_json),
+        "QC2": qcf.QC2().lab(SZA, Dif, loaded_json),
+        "QC3": qcf.QC3().lab(SZA, DirN, loaded_json),
+        "QC5": qcf.QC5().lab(SZA, LWdn, loaded_json),
+        "QC10": qcf.QC10().lab(Ta, LWdn, loaded_json),
         "QC19": qcf.QC19(Ta)
     }
     # create row for aqc file

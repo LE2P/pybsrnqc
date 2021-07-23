@@ -4,34 +4,11 @@ Module that open the data  as we want
 
 # Required Imports
 import pandas as pd
-import json
-import importlib.resources
 import os
 
 from pybsrnqc import utils
+from pybsrnqc.automaticQC import Conf
 # -----------------------------------------------------------------------------------------------------------------
-
-# Get data conf from JSON file
-with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
-    with open(data_path, 'r') as f:
-        loaded_json = json.load(f)
-
-
-class Conf:
-    """
-    BSRN station, database and headers from input file configurations
-    """
-    LAT = loaded_json['station']['LAT']
-    LON = loaded_json['station']['LON']
-    ALT = loaded_json['station']['ALT']
-    TZ = loaded_json['station']['TZ']
-    TIMESTAMP_NAME = loaded_json['header']['TIMESTAMP_NAME']
-    GSW_NAME = loaded_json['header']['GSW_NAME']
-    DIF_NAME = loaded_json['header']['DIF_NAME']
-    DIR_NAME = loaded_json['header']['DIR_NAME']
-    LWDN_NAME = loaded_json['header']['LWDN_NAME']
-    TA_NAME = loaded_json['header']['TA_NAME']
-
 
 # Récupération de toutes les données
 
