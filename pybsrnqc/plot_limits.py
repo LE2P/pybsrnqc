@@ -197,14 +197,19 @@ def hist_data(df, QC, dimension='3D'):
 
 
 def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
-                  log_form=True, save='KDE_result', select=False):
+                  log_form=True, save='KDE_result', select=False, bw_sel=None):
 
     # Get the data
     X = np.array(df[[QC.vary, QC.varx]]).T
     # Kernel calculation
     print('Computing kde - It can take some times')
-    kernel = stats.gaussian_kde(X)(X)
-    kernel_log = np.log(kernel)
+
+    if bw_sel is None:
+        kernel = stats.gaussian_kde(X)(X)
+        kernel_log = np.log(kernel)
+    else:
+        kernel = stats.gaussian_kde(X, bw_method=bw_sel)(X)
+        kernel_log = np.log(kernel)
 
     # Plot
     if display:

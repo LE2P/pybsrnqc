@@ -1,4 +1,5 @@
-""" Module computing the best coefficient of a QC automatically"""
+
+"""Module computing the best coefficient of a QC automatically"""
 
 # Required imports
 from pybsrnqc import open_data as od
@@ -17,7 +18,7 @@ with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
         dic_coefs = json.load(f)
 
 
-def compute(path=None, level='level_2'):
+def compute(path=None, level='level_2', bw_sel=None):
 
     # Choosing the QC
     QC = input('What QC do you want to study ? \n Enter QCn where n is the number of the QC chosen \n Answer : ')
@@ -42,9 +43,9 @@ def compute(path=None, level='level_2'):
 
     # Calculating kernel density for the dataset
     if QC.name == 'QC3' or QC.name == 'QC10':
-        log_kernel, selected = pl.kde_computing(df, QC, select=True)
+        log_kernel, selected = pl.kde_computing(df, QC, select=True, bw_sel=bw_sel)
     else:
-        log_kernel = pl.kde_computing(df, QC)
+        log_kernel = pl.kde_computing(df, QC, bw_sel=bw_sel)
 
     # Choosing the threshold
     threshold = float(input('Threshold for outliers : '))
