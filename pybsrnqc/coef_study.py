@@ -250,7 +250,7 @@ def threshold_var(df, log_kernel, threshold_range=None, step=0.1, display=True):
 
     if display:
 
-        plt.figure(figsize=(16, 14))
+        plt.figure(figsize=(20, 14))
         plt.plot(df_var['thresholds'], df_var['nb_out_density'])
         plt.title('Number of elements removed according to a threshold')
         plt.xlabel('Threshold')

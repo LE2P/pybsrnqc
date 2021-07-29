@@ -61,7 +61,7 @@ def limit_plot(df, QC, coefs, save=False, level='all', display=True,
         lim_bsrn.append(l_bsrn)
 
     if fig:
-        plt.figure(figsize=(14, 10))
+        plt.figure(figsize=(20, 14))
 
     if values:
         plt.scatter(val1_var, val2_var, marker='+', color='dodgerblue',
@@ -115,7 +115,7 @@ def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], 
     val1_var = list(X_val1)
     val2_var = list(X_val2)
 
-    plt.figure(figsize=(14, 10))
+    plt.figure(figsize=(20, 14))
     plt.scatter(val1_var, val2_var, marker='+', color='dodgerblue',
                 label='Values', s=1)
 
@@ -161,7 +161,7 @@ def hist_data(df, QC, dimension='3D'):
     X = np.array(df[[QC.vary, QC.varx]])
 
     # Create the figure
-    fig = plt.figure(figsize=(18, 14))
+    fig = plt.figure(figsize=(20, 14))
     ax = fig.add_subplot(projection='3d')
 
     hist, xedges, yedges = np.histogram2d(X[:, 0], X[:, 1], bins=75)
@@ -214,7 +214,7 @@ def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
     # Plot
     if display:
 
-        fig, ax = plt.subplots(figsize=(18, 12))
+        fig, ax = plt.subplots(figsize=(20, 14))
         pts = plt.scatter(X[1, :], X[0, :], c=kernel_log,
                           s=1, cmap=plt.cm.jet)
         selector = SelectFromCollection(ax, pts)
@@ -280,7 +280,7 @@ def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
 
 def plot_kde(df, log_kernel, QC, coefs, level='level_2'):
 
-    plt.figure(figsize=(18, 12))
+    plt.figure(figsize=(20, 14))
 
     # Get the data
     X = np.array(df[[QC.vary, QC.varx]]).T
@@ -314,7 +314,7 @@ def plot_series_kde(df, log_kernel, QC, begin, end,
     else:
         tick = np.arange(0, len(list(df_week[var])), 60)
 
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(20, 14))
 
     if line:
         plt.plot(list(df_week[var]), list(df_week[QC.vary]),
