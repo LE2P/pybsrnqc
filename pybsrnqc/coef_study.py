@@ -70,7 +70,7 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
         # Generation of the new coefficients
 
         dic = dic_coefs.copy()
-        dic['COEFF'][coef_name] = coef
+        dic['COEF'][coef_name] = coef
 
         # Generation of the outliers according to the limits linked to the coefficients
 
