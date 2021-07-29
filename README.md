@@ -189,7 +189,7 @@ generateQCFiles('./dataset/201908_brut.csv')
    # Coefficient calculation
    df_score, score = cs.calc_coef(df, log_kernel, qcf.QC1(), threshold=-15)
    ```
-## Small dictionary of functions
+  ## Small dictionary of functions
 
 * `open_data.open_all(path, period=None, select_day=False, select_Zenith=True)`
     * path : path of the directory with the data files
