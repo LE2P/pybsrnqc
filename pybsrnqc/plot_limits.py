@@ -99,10 +99,10 @@ def limit_plot(df, QC, coefs, save=False, level='all', display=True,
     if save:
         plt.savefig(f'limit_plot - {QC.vary} versus {QC.varx}')
     if display:
-        plt.xlabel(QC.unitx)
+        plt.xlabel(QC.unitx,)
         plt.ylabel(QC.unity)
         plt.title(f'Limits - {QC.vary}', fontsize=20)
-        plt.legend()
+        plt.legend(prop={'size': 15})
         plt.show()
 
 
@@ -147,7 +147,7 @@ def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], 
     plt.xlabel(QC.unitx)
     plt.ylabel(QC.unity)
     plt.title(f'Limits - {QC.vary}', fontsize=20)
-    plt.legend()
+    plt.legend(prop={'size': 15})
     plt.show()
 
 
@@ -250,7 +250,7 @@ def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
         else:
             ax.set_title(f'{QC.vary} density along {QC.varx}', fontsize=20)
         plt.colorbar(pts, label='Density Log(KDE)')
-        ax.legend()
+        ax.legend(prop={'size': 15})
         plt.show()
 
     # Download file
@@ -297,7 +297,7 @@ def plot_kde(df, log_kernel, QC, coefs, level='level_2'):
     plt.ylabel(QC.unity)
     plt.title(f'{QC.vary} density along {QC.varx}', fontsize=20)
     plt.colorbar(plot, label='Density Log(KDE)')
-    plt.legend()
+    plt.legend(prop={'size': 15})
     plt.show()
 
 
