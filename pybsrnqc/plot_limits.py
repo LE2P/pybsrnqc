@@ -101,7 +101,7 @@ def limit_plot(df, QC, coefs, save=False, level='all', display=True,
     if display:
         plt.xlabel(QC.unitx)
         plt.ylabel(QC.unity)
-        plt.title(f'Limits - {QC.vary}')
+        plt.title(f'Limits - {QC.vary}', fontsize=20)
         plt.legend()
         plt.show()
 
@@ -146,7 +146,7 @@ def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], 
 
     plt.xlabel(QC.unitx)
     plt.ylabel(QC.unity)
-    plt.title(f'Limits - {QC.vary}')
+    plt.title(f'Limits - {QC.vary}', fontsize=20)
     plt.legend()
     plt.show()
 
@@ -185,7 +185,7 @@ def hist_data(df, QC, dimension='3D'):
 
     ax.bar3d(xpos, ypos, zpos, dx, dy, dz, color=rgba, zsort='average')
 
-    plt.title(f'Data histogram - {QC.vary} vs {QC.varx}', fontdict={'fontsize': 16})
+    plt.title(f'Data histogram - {QC.vary} vs {QC.varx}', fontdict={'fontsize': 20})
     plt.xlabel(QC.unity)
     plt.ylabel(QC.unitx)
     ax.set_zlabel('Number of samples')
@@ -236,19 +236,19 @@ def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
                         # print(selected)
                         # print(type(selected))
                         selector.disconnect()
-                        ax.set_title("")
+                        ax.set_title("", fontsize=20)
                         fig.canvas.draw()
 
                 fig.canvas.mpl_connect("key_press_event", accept)
-            ax.set_title("Press enter to accept selected points.")
+            ax.set_title("Press enter to accept selected points.", fontsize=20)
 
         ax.set_xlabel(QC.unitx)
         ax.set_ylabel(QC.unity)
         if select:
             if QC.name == 'QC3' or QC.name == 'QC10':
-                ax.set_title(f"{QC.vary} density along {QC.varx} \n Select the points that you don't want to consider")
+                ax.set_title(f"{QC.vary} density along {QC.varx} \n Select the points that you don't want to consider", fontsize=20)
         else:
-            ax.set_title(f'{QC.vary} density along {QC.varx}')
+            ax.set_title(f'{QC.vary} density along {QC.varx}', fontsize=20)
         plt.colorbar(pts, label='Density Log(KDE)')
         ax.legend()
         plt.show()
@@ -295,7 +295,7 @@ def plot_kde(df, log_kernel, QC, coefs, level='level_2'):
 
     plt.xlabel(QC.unitx)
     plt.ylabel(QC.unity)
-    plt.title(f'{QC.vary} density along {QC.varx}')
+    plt.title(f'{QC.vary} density along {QC.varx}', fontsize=20)
     plt.colorbar(plot, label='Density Log(KDE)')
     plt.legend()
     plt.show()
@@ -326,7 +326,7 @@ def plot_series_kde(df, log_kernel, QC, begin, end,
     plt.xlabel(var)
     plt.ylabel(QC.unity)
     plt.xticks(tick, rotation=45)
-    plt.title(f'{QC.vary} and its density - from {begin}')
+    plt.title(f'{QC.vary} and its density - from {begin}', fontsize=20)
     plt.clim(kernel_range[0], kernel_range[1])
     plt.colorbar(plot, label='Density Log(KDE)')
     plt.show()
