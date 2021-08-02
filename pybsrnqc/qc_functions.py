@@ -6,6 +6,7 @@ Module that provides the QC class with their assiocated functions and labeling
 # Imports required
 import math
 import numpy as np
+from pybsrnqc.config import Coef
 
 # Physics variables
 
@@ -43,16 +44,16 @@ class QC1:
         self.coefficients = {'level_1': 'C1', 'level_2': 'D1'}
         self.coef_range = [0.0, 1.2]
 
-    def f(self, SZA, GSW, coefs):
+    def f(self, SZA, GSW, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1 = ref.SOLAR_CONSTANT * coefs['COEF']['C1'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 50
-        l2 = ref.SOLAR_CONSTANT * coefs['COEF']['D1'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 55
+        l1 = ref.SOLAR_CONSTANT * coef.C1 * math.pow(math.cos(math.radians(SZA)), 1.2) + 50
+        l2 = ref.SOLAR_CONSTANT * coef.D1 * math.pow(math.cos(math.radians(SZA)), 1.2) + 55
         l_bsrn = ref.SOLAR_CONSTANT * 1.5 * math.pow(math.cos(math.radians(SZA)), 1.2) + 100
 
         return l1, l2, l_bsrn
 
-    def lab(self, SZA, GSW, coefs):
+    def lab(self, SZA, GSW, coef: Coef):
         """GSW [basic limits tests]"""
         if GSW is not None:
             if (GSW < -4):
@@ -62,9 +63,9 @@ class QC1:
             if SZA >= 0 and SZA <= 90:  # cannot have float exponent of negative value
                 if(GSW > (ref.SOLAR_CONSTANT * 1.5 * math.pow(math.cos(math.radians(SZA)), 1.2)) + 100):
                     return 6
-                if(GSW > (ref.SOLAR_CONSTANT * coefs['COEF']['D1'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 55):
+                if(GSW > (ref.SOLAR_CONSTANT * coef.D1 * math.pow(math.cos(math.radians(SZA)), 1.2)) + 55):
                     return 4
-                if(GSW > (ref.SOLAR_CONSTANT * coefs['COEF']['C1'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 50):
+                if(GSW > (ref.SOLAR_CONSTANT * coef.C1 * math.pow(math.cos(math.radians(SZA)), 1.2)) + 50):
                     return 2
             else:
                 return -1
@@ -72,7 +73,7 @@ class QC1:
             return -1
         return 0
 
-    def calc_lim(self, df, coefs):
+    def calc_lim(self, df, coef: Coef):
         """ Computation of the limits and the labels of a dataframe"""
 
         df = df[['timestamp', self.varx, self.vary]]
@@ -94,7 +95,7 @@ class QC1:
 
             if self.vary == 'downward_avg':
 
-                l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coefs)
+                l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coef)
 
                 lim_l1_min.append(l1_min)
                 lim_l2_min.append(l2_min)
@@ -102,9 +103,9 @@ class QC1:
 
             else:
 
-                l1, l2, l_bsrn = self.f(VAL1, VAL2, coefs)
+                l1, l2, l_bsrn = self.f(VAL1, VAL2, coef)
 
-            label = self.lab(VAL1, VAL2, coefs)
+            label = self.lab(VAL1, VAL2, coef)
 
             lim_l1.append(l1)
             lim_l2.append(l2)
@@ -125,16 +126,16 @@ class QC2:
         self.coefficients = {'level_1': 'C2', 'level_2': 'D2'}
         self.coef_range = [0.0, 1.0]
 
-    def f(self, SZA, Dif, coefs):
+    def f(self, SZA, Dif, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1 = ref.SOLAR_CONSTANT * coefs['COEF']['C2'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 30
-        l2 = ref.SOLAR_CONSTANT * coefs['COEF']['D2'] * math.pow(math.cos(math.radians(SZA)), 1.2) + 35
+        l1 = ref.SOLAR_CONSTANT * coef.C2 * math.pow(math.cos(math.radians(SZA)), 1.2) + 30
+        l2 = ref.SOLAR_CONSTANT * coef.D2 * math.pow(math.cos(math.radians(SZA)), 1.2) + 35
         l_bsrn = ref.SOLAR_CONSTANT * 0.95 * math.pow(math.cos(math.radians(SZA)), 1.2) + 50
 
         return l1, l2, l_bsrn
 
-    def lab(self, SZA, Dif, coefs):
+    def lab(self, SZA, Dif, coef: Coef):
         """Diffuse SW [basic limits tests]"""
         if Dif is not None:
             if (Dif < -4):
@@ -144,9 +145,9 @@ class QC2:
             if SZA >= 0 and SZA <= 90:  # cannot have float exponent of negative value
                 if(Dif > (ref.SOLAR_CONSTANT * 0.95 * math.pow(math.cos(math.radians(SZA)), 1.2)) + 50):
                     return 6
-                if(Dif > (ref.SOLAR_CONSTANT * coefs['COEF']['D2'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 35):
+                if(Dif > (ref.SOLAR_CONSTANT * coef.D2 * math.pow(math.cos(math.radians(SZA)), 1.2)) + 35):
                     return 4
-                if(Dif > (ref.SOLAR_CONSTANT * coefs['COEF']['C2'] * math.pow(math.cos(math.radians(SZA)), 1.2)) + 30):
+                if(Dif > (ref.SOLAR_CONSTANT * coef.C2 * math.pow(math.cos(math.radians(SZA)), 1.2)) + 30):
                     return 2
             else:
                 return -1
@@ -154,7 +155,7 @@ class QC2:
             return -1
         return 0
 
-    def calc_lim(self, df, coefs):
+    def calc_lim(self, df, coef: Coef):
         """ Computation of the limits and the labels of a dataframe"""
 
         df = df[['timestamp', self.varx, self.vary]]
@@ -176,7 +177,7 @@ class QC2:
 
             if self.vary == 'downward_avg':
 
-                l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coefs)
+                l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coef)
 
                 lim_l1_min.append(l1_min)
                 lim_l2_min.append(l2_min)
@@ -184,9 +185,9 @@ class QC2:
 
             else:
 
-                l1, l2, l_bsrn = self.f(VAL1, VAL2, coefs)
+                l1, l2, l_bsrn = self.f(VAL1, VAL2, coef)
 
-            label = self.lab(VAL1, VAL2, coefs)
+            label = self.lab(VAL1, VAL2, coef)
 
             lim_l1.append(l1)
             lim_l2.append(l2)
@@ -207,16 +208,16 @@ class QC3:
         self.coefficients = {'level_1': 'C3', 'level_2': 'D3'}
         self.coef_range = [0.0, 1.0]
 
-    def f(self, SZA, DirN, coefs):
+    def f(self, SZA, DirN, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1 = ref.SOLAR_CONSTANT * coefs['COEF']['C3'] * math.pow(math.cos(math.radians(SZA)), 0.2) + 10
-        l2 = ref.SOLAR_CONSTANT * coefs['COEF']['D3'] * math.pow(math.cos(math.radians(SZA)), 0.2) + 15
+        l1 = ref.SOLAR_CONSTANT * coef.C3 * math.pow(math.cos(math.radians(SZA)), 0.2) + 10
+        l2 = ref.SOLAR_CONSTANT * coef.D3 * math.pow(math.cos(math.radians(SZA)), 0.2) + 15
         l_bsrn = ref.SOLAR_CONSTANT
 
         return l1, l2, l_bsrn
 
-    def lab(self, SZA, DirN, coefs):
+    def lab(self, SZA, DirN, coef: Coef):
         """Direct Normal SW  [basic limits tests]"""
         if DirN is not None:
             if (DirN < -4):
@@ -226,9 +227,9 @@ class QC3:
             if (DirN > ref.SOLAR_CONSTANT):
                 return 6
             if SZA >= 0 and SZA <= 90:  # cannot have float exponent of negative value
-                if(DirN > (ref.SOLAR_CONSTANT * coefs['COEF']['D3'] * math.pow(math.cos(math.radians(SZA)), 0.2)) + 15):
+                if(DirN > (ref.SOLAR_CONSTANT * coef.D3 * math.pow(math.cos(math.radians(SZA)), 0.2)) + 15):
                     return 4
-                if(DirN > (ref.SOLAR_CONSTANT * coefs['COEF']['C3'] * math.pow(math.cos(math.radians(SZA)), 0.2)) + 10):
+                if(DirN > (ref.SOLAR_CONSTANT * coef.C3 * math.pow(math.cos(math.radians(SZA)), 0.2)) + 10):
                     return 2
             else:
                 return -1
@@ -236,7 +237,7 @@ class QC3:
             return -1
         return 0
 
-    def calc_lim(self, df, coefs):
+    def calc_lim(self, df, coef: Coef):
         """ Computation of the limits and the labels of a dataframe"""
 
         df = df[['timestamp', self.varx, self.vary]]
@@ -258,7 +259,7 @@ class QC3:
 
             if self.vary == 'downward_avg':
 
-                l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coefs)
+                l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coef)
 
                 lim_l1_min.append(l1_min)
                 lim_l2_min.append(l2_min)
@@ -266,9 +267,9 @@ class QC3:
 
             else:
 
-                l1, l2, l_bsrn = self.f(VAL1, VAL2, coefs)
+                l1, l2, l_bsrn = self.f(VAL1, VAL2, coef)
 
-            label = self.lab(VAL1, VAL2, coefs)
+            label = self.lab(VAL1, VAL2, coef)
 
             lim_l1.append(l1)
             lim_l2.append(l2)
@@ -290,39 +291,39 @@ class QC5:
         self.coef_range = [400.0, 600.0]
         self.coef_range_min = [200.0, 400.0]
 
-    def f(self, SZA, LWdn, coefs):
+    def f(self, SZA, LWdn, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1_max = coefs['COEF']['C6']
-        l2_max = coefs['COEF']['D6']
+        l1_max = coef.C6
+        l2_max = coef.D6
         l_bsrn_max = 700
 
-        l1_min = coefs['COEF']['C5']
-        l2_min = coefs['COEF']['D5']
+        l1_min = coef.C5
+        l2_min = coef.D5
         l_bsrn_min = 40
 
         return l1_max, l2_max, l_bsrn_max, l1_min, l2_min, l_bsrn_min
 
-    def lab(self, Ta, LWdn, coefs):
+    def lab(self, Ta, LWdn, coef: Coef):
         """LWdn [basic limits tests]"""
         if LWdn is not None:
             if (LWdn > 700):
                 return 6
             if (LWdn < 40):
                 return 5
-            if (LWdn > coefs['COEF']['D6']):
+            if (LWdn > coef.D6):
                 return 4
-            if (LWdn < coefs['COEF']['D5']):
+            if (LWdn < coef.D5):
                 return 3
-            if (LWdn > coefs['COEF']['C6']):
+            if (LWdn > coef.C6):
                 return 2
-            if (LWdn < coefs['COEF']['C5']):
+            if (LWdn < coef.C5):
                 return 1
         else:
             return -1
         return 0
 
-    def calc_lim(self, df, coefs):
+    def calc_lim(self, df, coef: Coef):
         """ Computation of the limits and the labels of a dataframe"""
 
         df = df[['timestamp', self.varx, self.vary]]
@@ -342,13 +343,13 @@ class QC5:
 
         for VAL1, VAL2 in zip(X_val1, X_val2):
 
-            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coefs)
+            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coef)
 
             lim_l1_min.append(l1_min)
             lim_l2_min.append(l2_min)
             lim_bsrn_min.append(l_bsrn_min)
 
-            label = self.lab(VAL1, VAL2, coefs)
+            label = self.lab(VAL1, VAL2, coef)
 
             lim_l1.append(l1)
             lim_l2.append(l2)
@@ -370,30 +371,30 @@ class QC10:
         self.coef_range = [0.0, 10.0]
         self.coef_range_min = [0.60, 1.0]
 
-    def f(self, Ta, LWdn, coefs):
+    def f(self, Ta, LWdn, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
-        l1_max = ref.BOLTZMANN * math.pow(Ta + 273.15, 4) + coefs['COEF']['C12']
-        l2_max = ref.BOLTZMANN * math.pow(Ta + 273.15, 4) + coefs['COEF']['D12']
+        l1_max = ref.BOLTZMANN * math.pow(Ta + 273.15, 4) + coef.C12
+        l2_max = ref.BOLTZMANN * math.pow(Ta + 273.15, 4) + coef.D12
         l_bsrn_max = 700
 
-        l1_min = coefs['COEF']['C11'] * ref.BOLTZMANN * math.pow(Ta + 274.15, 4)
-        l2_min = coefs['COEF']['D11'] * ref.BOLTZMANN * math.pow(Ta + 274.15, 4)
+        l1_min = coef.C11 * ref.BOLTZMANN * math.pow(Ta + 274.15, 4)
+        l2_min = coef.D11 * ref.BOLTZMANN * math.pow(Ta + 274.15, 4)
         l_bsrn_min = 40
 
         return l1_max, l2_max, l_bsrn_max, l1_min, l2_min, l_bsrn_min
 
-    def lab(self, Ta, LWdn, coefs):
+    def lab(self, Ta, LWdn, coef: Coef):
         """LWdn to Ta test"""
         if all(v is not None for v in [LWdn, Ta]):
             if QC19(Ta) == 0:
-                if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coefs['COEF']['D12'])):
+                if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coef.D12)):
                     return 4
-                if (LWdn < (coefs['COEF']['D11'] * ref.BOLTZMANN * math.pow(Ta, 4))):
+                if (LWdn < (coef.D11 * ref.BOLTZMANN * math.pow(Ta, 4))):
                     return 3
-                if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coefs['COEF']['C12'])):
+                if (LWdn > (ref.BOLTZMANN * math.pow(Ta, 4) + coef.C12)):
                     return 2
-                if (LWdn < (coefs['COEF']['C11'] * ref.BOLTZMANN * math.pow(Ta, 4))):
+                if (LWdn < (coef.C11 * ref.BOLTZMANN * math.pow(Ta, 4))):
                     return 1
             else:
                 return -1
@@ -401,7 +402,7 @@ class QC10:
             return -1
         return 0
 
-    def calc_lim(self, df, coefs):
+    def calc_lim(self, df, coef: Coef):
         """ Computation of the limits and the labels of a dataframe"""
 
         df = df[['timestamp', self.varx, self.vary]]
@@ -421,13 +422,13 @@ class QC10:
 
         for VAL1, VAL2 in zip(X_val1, X_val2):
 
-            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coefs)
+            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coef)
 
             lim_l1_min.append(l1_min)
             lim_l2_min.append(l2_min)
             lim_bsrn_min.append(l_bsrn_min)
 
-            label = self.lab(VAL1, VAL2, coefs)
+            label = self.lab(VAL1, VAL2, coef)
 
             lim_l1.append(l1)
             lim_l2.append(l2)

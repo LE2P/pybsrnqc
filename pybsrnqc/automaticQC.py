@@ -12,47 +12,30 @@ from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
 from bokeh.plotting import figure, output_file, show
 from pybsrnqc import utils
+from pybsrnqc.config import Station, Coef, Header
 from pybsrnqc import qc_functions as qcf
 
-# Get data conf from JSON files
-with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
-    with open(data_path, 'r') as f:
-        loaded_json = json.load(f)
 
-# Configuration of some static variables
+default_station = Station()
+default_coef = Coef()
+default_header = Header()
 
 
-class Conf:
-    """
-    BSRN station, database and headers from input file configurations
-    """
-    LAT = loaded_json['STATION']['LAT']
-    LON = loaded_json['STATION']['LON']
-    ALT = loaded_json['STATION']['ALT']
-    TZ = loaded_json['STATION']['TZ']
-    TIMESTAMP_NAME = loaded_json['HEADER']['TIMESTAMP_NAME']
-    GSW_NAME = loaded_json['HEADER']['GSW_NAME']
-    DIF_NAME = loaded_json['HEADER']['DIF_NAME']
-    DIR_NAME = loaded_json['HEADER']['DIR_NAME']
-    LWDN_NAME = loaded_json['HEADER']['LWDN_NAME']
-    TA_NAME = loaded_json['HEADER']['TA_NAME']
-
-
-def fix_values(row: OrderedDict):
+def fix_values(row: OrderedDict, header: Header = default_header):
     GSW, Dif, DirN, LWdn, Ta, Td = None, None, None, None, None, None
     # check variables name on input file
     try:
-        timestamp = row[Conf.TIMESTAMP_NAME]
-        if Conf.GSW_NAME in row and utils.isfloat(row[Conf.GSW_NAME]):
-            GSW = float(row[Conf.GSW_NAME])
-        if Conf.DIF_NAME in row and utils.isfloat(row[Conf.DIF_NAME]):
-            Dif = float(row[Conf.DIF_NAME])
-        if Conf.DIR_NAME in row and utils.isfloat(row[Conf.DIR_NAME]):
-            DirN = float(row[Conf.DIR_NAME])
-        if Conf.LWDN_NAME in row and utils.isfloat(row[Conf.LWDN_NAME]):
-            LWdn = float(row[Conf.LWDN_NAME])
-        if Conf.TA_NAME in row and utils.isfloat(row[Conf.TA_NAME]):
-            Ta = float(row[Conf.TA_NAME]) + 273.15
+        timestamp = row[header.TIMESTAMP_NAME]
+        if header.GSW_NAME in row and utils.isfloat(row[header.GSW_NAME]):
+            GSW = float(row[header.GSW_NAME])
+        if header.DIF_NAME in row and utils.isfloat(row[header.DIF_NAME]):
+            Dif = float(row[header.DIF_NAME])
+        if header.DIR_NAME in row and utils.isfloat(row[header.DIR_NAME]):
+            DirN = float(row[header.DIR_NAME])
+        if header.LWDN_NAME in row and utils.isfloat(row[header.LWDN_NAME]):
+            LWdn = float(row[header.LWDN_NAME])
+        if header.TA_NAME in row and utils.isfloat(row[header.TA_NAME]):
+            Ta = float(row[header.TA_NAME]) + 273.15
     except KeyError as e:
         print('KeyError: %s' % str(e))
     except ValueError as valueError:
@@ -60,18 +43,18 @@ def fix_values(row: OrderedDict):
     return (timestamp, GSW, Dif, DirN, LWdn, Ta)
 
 
-def getRow(row: OrderedDict, zenith_serie):
+def getRow(row: OrderedDict, zenith_serie, coef: Coef = default_coef, header: Header = default_header):
     # get values of parameters
-    [timestamp, GSW, Dif, DirN, LWdn, Ta] = fix_values(row)
+    [timestamp, GSW, Dif, DirN, LWdn, Ta] = fix_values(row, header)
     SZA = float(zenith_serie[timestamp])
     # application of data quality control
     qc_result = {
         "timestamp": timestamp,
-        "QC1": qcf.QC1().lab(SZA, GSW, loaded_json),
-        "QC2": qcf.QC2().lab(SZA, Dif, loaded_json),
-        "QC3": qcf.QC3().lab(SZA, DirN, loaded_json),
-        "QC5": qcf.QC5().lab(SZA, LWdn, loaded_json),
-        "QC10": qcf.QC10().lab(Ta, LWdn, loaded_json),
+        "QC1": qcf.QC1().lab(SZA, GSW, coef),
+        "QC2": qcf.QC2().lab(SZA, Dif, coef),
+        "QC3": qcf.QC3().lab(SZA, DirN, coef),
+        "QC5": qcf.QC5().lab(SZA, LWdn, coef),
+        "QC10": qcf.QC10().lab(Ta, LWdn, coef),
         "QC19": qcf.QC19(Ta)
     }
     # create row for aqc file
@@ -106,7 +89,7 @@ def getRow(row: OrderedDict, zenith_serie):
     return row_aqc, row_qcrad
 
 
-def generateQCFiles(filepath):
+def generateQCFiles(filepath, station: Station = default_station, coef: Coef = default_coef):
     """Create the 2 files _aqc.csv and _qrcad.csv"""
     print(filepath)
     # Manage filenames
@@ -116,13 +99,13 @@ def generateQCFiles(filepath):
     # load input file into a DataFrame
     file_brut = pd.read_csv(FILE_BRUT)
     timestamp_list = file_brut.timestamp.to_list()
-    zenith_serie = utils.getZenith(timestamp_list, Conf.LAT, Conf.LON, Conf.ALT)
+    zenith_serie = utils.getZenith(timestamp_list, station.LAT, station.LON, station.ALT)
     # process input file
     datapoints_qcrad, datapoints_aqc = [], []
     with open(FILE_BRUT, 'r') as fileIn:
         reader = csv.DictReader(fileIn, delimiter=',')
         for row in reader:
-            (row_aqc, row_qcrad) = getRow(row, zenith_serie)
+            (row_aqc, row_qcrad) = getRow(row, zenith_serie, coef)
             datapoints_qcrad.append(row_qcrad)
             datapoints_aqc.append(row_aqc)
     # convert list of qcrad results into dataframe & save as a csv file
