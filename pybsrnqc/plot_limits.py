@@ -326,7 +326,7 @@ def plot_series_kde(df, log_kernel, QC, begin, end,
     plt.xlabel(var)
     plt.ylabel(QC.unity)
     plt.xticks(tick, rotation=45)
-    plt.title(f'{QC.vary} and its density - from {begin}', fontsize=20)
+    plt.title(f'{QC.vary} and its density - {begin}', fontsize=20)
     plt.clim(kernel_range[0], kernel_range[1])
     plt.colorbar(plot, label='Density Log(KDE)')
     plt.show()
