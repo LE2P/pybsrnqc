@@ -19,8 +19,8 @@ from matplotlib.path import Path
 # Plots of the BSRN limits on datasets
 
 
-def limit_plot(df, QC, coefs, save=False, level='all', display=True,
-               values=True, fig=True):
+def limit_plot(df, QC, coefs, save: bool = False, level='all', display: bool = True,
+               values: bool = True, fig: bool = True):
 
     """ Function plotting the limit curves and the dataset points of a
         dataframe"""
@@ -107,7 +107,7 @@ def limit_plot(df, QC, coefs, save=False, level='all', display=True,
 
 
 def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], level_min=None, coef_values_min=None):
-    'Dessine la courbe limite pour plusieurs valeurs du coefficients '
+    'Dessine la courbe limite pour plusieurs valeurs du coefficients'
 
     X_val1 = np.array(df[QC.varx])
     X_val2 = np.array(df[QC.vary])

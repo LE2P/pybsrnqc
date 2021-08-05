@@ -12,7 +12,7 @@ from pandas import read_csv, to_datetime
 import importlib.resources
 
 
-def plotBSRN(filepath, patterns=None, timeStart=None, timeEnd=None):
+def plotBSRN(filepath, patterns: list[str] = None, timeStart: str = None, timeEnd: str = None):
 
     # Import file
     yearMonth = path.basename(filepath).split("_")[0]
