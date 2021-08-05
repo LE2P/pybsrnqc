@@ -11,8 +11,8 @@ from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
 from bokeh.plotting import figure, output_file, show
 
-from pybsrnqc import qc_functions as qcf
 from pybsrnqc.config import Station, Coef, Header
+from pybsrnqc.qcrad import QC1, QC2, QC3, QC5, QC7, QC8, QC10, QC19
 from pybsrnqc.utils import isfloat, getZenith
 
 default_station = Station()
@@ -39,7 +39,7 @@ def fix_values(row: OrderedDict, header: Header = default_header):
         print('KeyError: %s' % str(e))
     except ValueError as valueError:
         print('ValueError: %s' % str(valueError))
-    return (timestamp, GSW, Dif, DirN, LWdn, Ta)
+    return timestamp, GSW, Dif, DirN, LWdn, Ta
 
 
 def getRow(row: OrderedDict, zenith_serie, coef: Coef = default_coef, header: Header = default_header):
@@ -49,12 +49,14 @@ def getRow(row: OrderedDict, zenith_serie, coef: Coef = default_coef, header: He
     # application of data quality control
     qc_result = {
         "timestamp": timestamp,
-        "QC1": qcf.QC1().lab(SZA, GSW, coef),
-        "QC2": qcf.QC2().lab(SZA, Dif, coef),
-        "QC3": qcf.QC3().lab(SZA, DirN, coef),
-        "QC5": qcf.QC5().lab(SZA, LWdn, coef),
-        "QC10": qcf.QC10().lab(Ta, LWdn, coef),
-        "QC19": qcf.QC19(Ta)
+        "QC1": QC1(GSW, SZA, coef),
+        "QC2": QC2(Dif, SZA, coef),
+        "QC3": QC3(DirN, SZA, coef),
+        "QC5": QC5(LWdn, coef),
+        "QC7": QC7(GSW, Dif, DirN, SZA),
+        "QC8": QC8(Dif, GSW, SZA),
+        "QC10": QC10(LWdn, Ta, coef),
+        "QC19": QC19(Ta)
     }
     # create row for aqc file
     row_aqc = row
