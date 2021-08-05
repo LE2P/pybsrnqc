@@ -1,19 +1,16 @@
 """
 Module that plot the curves following the quality controle equations
  """
-
-# Required imports
+import os
+import pickle
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import pickle
-import os
-
+from matplotlib.path import Path
+from matplotlib.widgets import LassoSelector
 from scipy import stats
 
-from matplotlib.widgets import LassoSelector
-from matplotlib.path import Path
 
 # -----------------------------------------------------------------------------------------------------------
 # Plots of the BSRN limits on datasets
@@ -128,8 +125,7 @@ def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], 
 
         # We plot for this coefficient
 
-        limit_plot(df, QC, new_coef, level=level, display=False,
-                   values=False, fig=False)
+        limit_plot(df, QC, new_coef, level=level, display=False, values=False, fig=False)
 
     if coef_values_min is not None:
         for v in coef_values_min:
@@ -158,13 +154,13 @@ def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], 
 def hist_data(df, QC, dimension='3D'):
 
     # Get the data
-    X = np.array(df[[QC.vary, QC.varx]])
+    x = np.array(df[[QC.vary, QC.varx]])
 
     # Create the figure
     fig = plt.figure(figsize=(20, 14))
     ax = fig.add_subplot(projection='3d')
 
-    hist, xedges, yedges = np.histogram2d(X[:, 0], X[:, 1], bins=75)
+    hist, xedges, yedges = np.histogram2d(x[:, 0], x[:, 1], bins=75)
 
     # Construct arrays for the anchor positions of the 16 bars.
     xpos, ypos = np.meshgrid(xedges[:-1] + 0.25, yedges[:-1] + 0.25, indexing="ij")
@@ -204,12 +200,8 @@ def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
     # Kernel calculation
     print('Computing kde - It can take some times')
 
-    if bw_sel is None:
-        kernel = stats.gaussian_kde(X)(X)
-        kernel_log = np.log(kernel)
-    else:
-        kernel = stats.gaussian_kde(X, bw_method=bw_sel)(X)
-        kernel_log = np.log(kernel)
+    kernel = stats.gaussian_kde(X, bw_method=bw_sel)(X)
+    kernel_log = np.log(kernel)
 
     # Plot
     if display:

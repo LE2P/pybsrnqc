@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 import csv
-import os
-import pandas as pd
 import datetime
+import os
 from collections import OrderedDict
 from pathlib import Path
+
+import pandas as pd
 from bokeh.layouts import column
 from bokeh.models import ColumnDataSource
 from bokeh.models.tools import HoverTool
 from bokeh.plotting import figure, output_file, show
-from pybsrnqc import utils
-from pybsrnqc.config import Station, Coef, Header
-from pybsrnqc import qc_functions as qcf
 
+from pybsrnqc import qc_functions as qcf
+from pybsrnqc.config import Station, Coef, Header
+from pybsrnqc.utils import isfloat, getZenith
 
 default_station = Station()
 default_coef = Coef()
@@ -24,15 +25,15 @@ def fix_values(row: OrderedDict, header: Header = default_header):
     # check variables name on input file
     try:
         timestamp = row[header.TIMESTAMP_NAME]
-        if header.GSW_NAME in row and utils.isfloat(row[header.GSW_NAME]):
+        if header.GSW_NAME in row and isfloat(row[header.GSW_NAME]):
             GSW = float(row[header.GSW_NAME])
-        if header.DIF_NAME in row and utils.isfloat(row[header.DIF_NAME]):
+        if header.DIF_NAME in row and isfloat(row[header.DIF_NAME]):
             Dif = float(row[header.DIF_NAME])
-        if header.DIR_NAME in row and utils.isfloat(row[header.DIR_NAME]):
+        if header.DIR_NAME in row and isfloat(row[header.DIR_NAME]):
             DirN = float(row[header.DIR_NAME])
-        if header.LWDN_NAME in row and utils.isfloat(row[header.LWDN_NAME]):
+        if header.LWDN_NAME in row and isfloat(row[header.LWDN_NAME]):
             LWdn = float(row[header.LWDN_NAME])
-        if header.TA_NAME in row and utils.isfloat(row[header.TA_NAME]):
+        if header.TA_NAME in row and isfloat(row[header.TA_NAME]):
             Ta = float(row[header.TA_NAME]) + 273.15
     except KeyError as e:
         print('KeyError: %s' % str(e))
@@ -97,7 +98,7 @@ def generateQCFiles(filepath, station: Station = default_station, coef: Coef = d
     # load input file into a DataFrame
     file_brut = pd.read_csv(FILE_BRUT)
     timestamp_list = file_brut.timestamp.to_list()
-    zenith_serie = utils.getZenith(timestamp_list, station.LAT, station.LON, station.ALT)
+    zenith_serie = getZenith(timestamp_list, station.LAT, station.LON, station.ALT)
     # process input file
     datapoints_qcrad, datapoints_aqc = [], []
     with open(FILE_BRUT, 'r') as fileIn:

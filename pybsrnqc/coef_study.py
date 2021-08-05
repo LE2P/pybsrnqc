@@ -2,14 +2,12 @@
 Module that compute the coefficients regarding the historical data
  """
 
-# Required imports
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-
 import importlib.resources
 import json
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 # -----------------------------------------------------------------------------------------------------------
@@ -18,8 +16,6 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         dic_coefs = json.load(f)
-
-
 # ------------------------------------------------------------------------------------------------------------
 
 
@@ -330,12 +326,9 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
             df_lim.loc[(df_lim.flag == 2) | (df_lim.flag == 4), "out_coef"] = 1
 
         a_scores.append(accuracy_score(df['out_density'], df_lim['out_coef']))
-        p_scores.append(precision_score(df['out_density'], df_lim['out_coef'],
-                                        zero_division=0))
-        r_scores.append(recall_score(df['out_density'], df_lim['out_coef'],
-                                     zero_division=0))
-        f_scores.append(f1_score(df['out_density'], df_lim['out_coef'],
-                                 zero_division=0))
+        p_scores.append(precision_score(df['out_density'], df_lim['out_coef'], zero_division=0))
+        r_scores.append(recall_score(df['out_density'], df_lim['out_coef'], zero_division=0))
+        f_scores.append(f1_score(df['out_density'], df_lim['out_coef'], zero_division=0))
 
     if QC.vary == 'downward_avg':
 
@@ -360,12 +353,9 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
 
             a_scores_min.append(accuracy_score(df['out_density'],
                                 df_lim['out_coef']))
-            p_scores_min.append(precision_score(df['out_density'],
-                                df_lim['out_coef'], zero_division=0))
-            r_scores_min.append(recall_score(df['out_density'],
-                                df_lim['out_coef'], zero_division=0))
-            f_scores_min.append(f1_score(df['out_density'],
-                                df_lim['out_coef'], zero_division=0))
+            p_scores_min.append(precision_score(df['out_density'], df_lim['out_coef'], zero_division=0))
+            r_scores_min.append(recall_score(df['out_density'], df_lim['out_coef'], zero_division=0))
+            f_scores_min.append(f1_score(df['out_density'], df_lim['out_coef'], zero_division=0))
 
     # Creation of the scores dataframe
 

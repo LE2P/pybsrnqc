@@ -5,8 +5,11 @@ Module that provides the QC class with their assiocated functions and labeling
 
 # Imports required
 import math
+
 import numpy as np
+
 from pybsrnqc.config import Coef
+
 
 # Physics variables
 

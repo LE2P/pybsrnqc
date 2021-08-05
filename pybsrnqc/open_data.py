@@ -2,12 +2,14 @@
 Module that open the data  as we want
 """
 
-# Required Imports
-import pandas as pd
 import os
 
-from pybsrnqc import utils
-from pybsrnqc.automaticQC import Conf
+import pandas as pd
+
+from pybsrnqc.config import Station
+from pybsrnqc.utils import getZenith
+
+
 # -----------------------------------------------------------------------------------------------------------------
 
 # Récupération de toutes les données
@@ -65,8 +67,7 @@ def open_all(path='./dataset', period=None, select_day=False, select_zenith=True
     # Zenith computation
 
     timestamp_list = df_fus.timestamp.to_list()
-    zenith_serie = utils.getZenith(
-        timestamp_list, Conf.LAT, Conf.LON, Conf.ALT)
+    zenith_serie = getZenith(timestamp_list, Station().LAT, Station().LON, Station().ALT)
     df_fus['SZA'] = list(zenith_serie)
 
     if select_zenith:
