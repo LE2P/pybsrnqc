@@ -8,13 +8,11 @@ from pybsrnqc import coef_study as cs
 from pybsrnqc import open_data as od
 from pybsrnqc import plot_limits as pl
 from pybsrnqc import qc_functions as qcf
+from pybsrnqc.config import Coef
 
 # Coefficients initialisation
 # Get data conf from JSON file
-with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
-    with open(data_path, 'r') as f:
-        dic_coefs = json.load(f)
-
+coef = Coef()
 
 def compute(path: str, bw_sel: str = None):
 
@@ -91,12 +89,12 @@ def compute(path: str, bw_sel: str = None):
         score_min = score_min.iloc[0]
 
     # Charging the new coeff
-    dic_coefs['COEF'][qc.coefficients[level]] = float(score[qc.coefficients[level]])
+    coef.__setattr__(qc.coefficients[level], float(score[qc.coefficients[level]]))
     if qc.vary == 'downward_avg':
-        dic_coefs['COEF'][qc.coefficients[level + '_min']] = float(score_min[qc.coefficients[level + '_min']])
+        coef.__setattr__(qc.coefficients[level + '_min'], float(score_min[qc.coefficients[level + '_min']]))
 
     # Plotting the result
-    pl.plot_kde(df, log_kernel, qc, dic_coefs, level=level)
+    pl.plot_kde(df, log_kernel, qc, coef, level=level)
 
     if qc.vary == 'downward_avg':
         return qc.coefficients[level], float(score[qc.coefficients[level]]), qc.coefficients[level + '_min'], float(score_min[qc.coefficients[level + '_min']])
