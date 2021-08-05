@@ -11,12 +11,13 @@ from matplotlib.path import Path
 from matplotlib.widgets import LassoSelector
 from scipy import stats
 
+from pybsrnqc.config import Coef
 
 # -----------------------------------------------------------------------------------------------------------
 # Plots of the BSRN limits on datasets
 
 
-def limit_plot(df, QC, coefs, save: bool = False, level='all', display: bool = True,
+def limit_plot(df, QC, coef: Coef, save: bool = False, level='all', display: bool = True,
                values: bool = True, fig: bool = True):
 
     """ Function plotting the limit curves and the dataset points of a
@@ -42,7 +43,7 @@ def limit_plot(df, QC, coefs, save: bool = False, level='all', display: bool = T
 
         if QC.vary == 'downward_avg':
 
-            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = QC.f(VAL1, VAL2, coefs)
+            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = QC.f(VAL1, VAL2, coef)
 
             lim_l1_min.append(l1_min)
             lim_l2_min.append(l2_min)
@@ -50,7 +51,7 @@ def limit_plot(df, QC, coefs, save: bool = False, level='all', display: bool = T
 
         else:
 
-            l1, l2, l_bsrn = QC.f(VAL1, VAL2, coefs)
+            l1, l2, l_bsrn = QC.f(VAL1, VAL2, coef)
 
         lim_l1.append(l1)
         lim_l2.append(l2)
@@ -63,33 +64,24 @@ def limit_plot(df, QC, coefs, save: bool = False, level='all', display: bool = T
         plt.scatter(val1_var, val2_var, marker='+', color='dodgerblue',
                     label='Values', s=1)
 
-    if level == 'all':
+    if level == 'level_1' or level == 'all':
         plt.scatter(val1_var, lim_l1, marker='+', color='green',
-                    label=f"1rst level limit - {coefs['COEF'][QC.coefficients['level_1']]}", s=1)
+                    label=f"1rst level limit - {coef.__getattribute__(QC.coefficients['level_1'])}", s=1)
+    if level == 'level_2' or level == 'all':
         plt.scatter(val1_var, lim_l2, marker='+', color='blue',
-                    label=f"2nd level limit - {coefs['COEF'][QC.coefficients['level_2']]}", s=1)
-        plt.scatter(val1_var, lim_bsrn, marker='+', color='red',
-                    label="BSRN  limit", s=1)
-    if level == 'level_1':
-        plt.scatter(val1_var, lim_l1, marker='+', color='green',
-                    label=f"1rst level limit - {coefs['COEF'][QC.coefficients['level_1']]}", s=1)
-    if level == 'level_2':
-        plt.scatter(val1_var, lim_l2, marker='+', color='blue',
-                    label=f"2nd level limit - {coefs['COEF'][QC.coefficients['level_2']]}", s=1)
-    if level == 'level_bsrn':
+                    label=f"2nd level limit - {coef.__getattribute__(QC.coefficients['level_2'])}", s=1)
+    if level == 'level_bsrn' or level == 'all':
         plt.scatter(val1_var, lim_bsrn, marker='+', color='red', label="BSRN  limit", s=1)
 
     if QC.vary == 'downward_avg':
 
-        if level == 'all':
-            plt.scatter(val1_var, lim_l1_min, marker='+', color='lightgreen', label=f"1rst level limit - {coefs['COEF'][QC.coefficients['level_1_min']]}", s=1)
-            plt.scatter(val1_var, lim_l2_min, marker='+', color='lightblue', label=f"2nd level limit - {coefs['COEF'][QC.coefficients['level_2_min']]}", s=1)
-            plt.scatter(val1_var, lim_bsrn_min, marker='+', color='lightcoral', label="BSRN  limit", s=1)
-        if level == 'level_1':
-            plt.scatter(val1_var, lim_l1_min, marker='+', color='lightgreen', label=f"1rst level limit - {coefs['COEF'][QC.coefficients['level_1_min']]}", s=1)
-        if level == 'level_2':
-            plt.scatter(val1_var, lim_l2_min, marker='+', color='lightblue', label=f"2nd level limit - {coefs['COEF'][QC.coefficients['level_2_min']]}", s=1)
-        if level == 'level_bsrn':
+        if level == 'level_1' or level == 'all':
+            plt.scatter(val1_var, lim_l1_min, marker='+', color='lightgreen',
+                        label=f"1rst level limit - {coef.__getattribute__(QC.coefficients['level_1_min'])}", s=1)
+        if level == 'level_2' or level == 'all':
+            plt.scatter(val1_var, lim_l2_min, marker='+', color='lightblue',
+                        label=f"2nd level limit - {coef.__getattribute__(QC.coefficients['level_2_min'])}", s=1)
+        if level == 'level_bsrn' or level == 'all':
             plt.scatter(val1_var, lim_bsrn_min, marker='+', color='lightcoral', label="BSRN  limit", s=1)
 
     if save:
@@ -102,7 +94,7 @@ def limit_plot(df, QC, coefs, save: bool = False, level='all', display: bool = T
         plt.show()
 
 
-def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], level_min=None, coef_values_min=None):
+def multiplot_coef(df, QC, coef, level='level_2', coef_values=[0.0, 0.5, 1.2], level_min=None, coef_values_min=None):
     'Dessine la courbe limite pour plusieurs valeurs du coefficients'
 
     X_val1 = np.array(df[QC.varx])
@@ -118,26 +110,19 @@ def multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], 
     for v in coef_values:
 
         # We compute the considered coefficient
-
-        new_coef = coefs.copy()
-        new_coef['COEF'][QC.coefficients[level]] = v
+        coef.__setattr__(QC.coefficients[level], v)
 
         # We plot for this coefficient
-
-        limit_plot(df, QC, new_coef, level=level, display=False, values=False, fig=False)
+        limit_plot(df, QC, coef, level=level, display=False, values=False, fig=False)
 
     if coef_values_min is not None:
         for v in coef_values_min:
 
             # We compute the considered coefficient
-
-            new_coef = coefs.copy()
-            new_coef['COEF'][QC.coefficients[level_min]] = v
+            coef.__setattr__(QC.coefficients[level_min], v)
 
             # We plot for this coefficient
-
-            limit_plot(df, QC, new_coef, level=level, display=False,
-                       values=False, fig=False)
+            limit_plot(df, QC, coef, level=level, display=False, values=False, fig=False)
 
     plt.xlabel(QC.unitx)
     plt.ylabel(QC.unity)
@@ -191,7 +176,7 @@ def hist_data(df, QC, dimension='3D'):
 # KDE computation and plotting for our dataset
 
 
-def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
+def kde_computing(df, QC, display=True, coef: Coef = None, limits=False, level='All',
                   log_form=True, save='KDE_result', select=False, bw_sel=None):
 
     # Get the data
@@ -206,13 +191,11 @@ def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
     if display:
 
         fig, ax = plt.subplots(figsize=(20, 14))
-        pts = plt.scatter(X[1, :], X[0, :], c=kernel_log,
-                          s=1, cmap=plt.cm.jet)
+        pts = plt.scatter(X[1, :], X[0, :], c=kernel_log, s=1, cmap=plt.cm.jet)
         selector = SelectFromCollection(ax, pts)
 
     if limits:
-        limit_plot(df, QC, coefs, save=False, level='all', display=False,
-                   values=False, fig=False)
+        limit_plot(df, QC, coef, save=False, level='all', display=False, values=False, fig=False)
 
     if display:
         if select:
@@ -269,7 +252,7 @@ def kde_computing(df, QC, display=True, coefs=None, limits=False, level='All',
             return kernel
 
 
-def plot_kde(df, log_kernel, QC, coefs, level='level_2'):
+def plot_kde(df, log_kernel, QC, coef: Coef, level='level_2'):
 
     plt.figure(figsize=(20, 14))
 
@@ -277,12 +260,10 @@ def plot_kde(df, log_kernel, QC, coefs, level='level_2'):
     X = np.array(df[[QC.vary, QC.varx]]).T
 
     # Plot the data
-    plot = plt.scatter(X[1, :], X[0, :], c=log_kernel,
-                       s=1, cmap=plt.cm.jet)
+    plot = plt.scatter(X[1, :], X[0, :], c=log_kernel, s=1, cmap=plt.cm.jet)
 
     if level is not None:
-        limit_plot(df, QC, coefs, save=False, level=level, display=False,
-                   values=False, fig=False)
+        limit_plot(df, QC, coef, save=False, level=level, display=False, values=False, fig=False)
 
     plt.xlabel(QC.unitx)
     plt.ylabel(QC.unity)
@@ -292,8 +273,7 @@ def plot_kde(df, log_kernel, QC, coefs, level='level_2'):
     plt.show()
 
 
-def plot_series_kde(df, log_kernel, QC, begin, end,
-                    var='timestamp', line=True):
+def plot_series_kde(df, log_kernel, QC, begin, end, var='timestamp', line=True):
 
     df['log_kde'] = log_kernel
     kernel_range = [np.min(log_kernel), np.max(log_kernel)]
