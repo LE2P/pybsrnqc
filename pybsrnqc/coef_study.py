@@ -279,8 +279,6 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
         dic = dic_coefs.copy()
         dic['COEF'][coef_name] = 0.6
 
-        # df_lim['lim_mid'] = QC.calc_lim(df, coefs=dic)[1]
-
         for el in selected:
             df.loc[(df['temperature'] == el[0]) & (df[QC.vary] == el[1]), 'out_density'] = 0
 

@@ -10,7 +10,52 @@ import pybsrnqc.qcrad as qcr
 from pybsrnqc.config import Coef
 
 
+def gen_calc_lim(self, df, coef: Coef):
+    """ Computation of the limits and the labels of a dataframe"""
+
+    df = df[['timestamp', self.varx, self.vary]]
+
+    X_val1 = np.array(df[self.varx])
+    X_val2 = np.array(df[self.vary])
+
+    lim_l1 = []
+    lim_l2 = []
+    lim_bsrn = []
+
+    lim_l1_min = []
+    lim_l2_min = []
+    lim_bsrn_min = []
+
+    labels = []
+
+    for VAL1, VAL2 in zip(X_val1, X_val2):
+
+        if self.vary == 'downward_avg':
+
+            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL2, VAL1, coef)
+
+            lim_l1_min.append(l1_min)
+            lim_l2_min.append(l2_min)
+            lim_bsrn_min.append(l_bsrn_min)
+
+        else:
+
+            l1, l2, l_bsrn = self.f(VAL2, VAL1, coef)
+
+        label = self.lab(VAL2, VAL1, coef)
+
+        lim_l1.append(l1)
+        lim_l2.append(l2)
+        lim_bsrn.append(l_bsrn)
+        labels.append(label)
+
+    if self.vary == 'downward_avg':
+        return lim_l1, lim_l2, lim_bsrn, labels, lim_l1_min, lim_l2_min, lim_bsrn_min
+    else:
+        return lim_l1, lim_l2, lim_bsrn, labels
+
 # Definition of the QC class
+
 
 class QC1:
 
@@ -24,7 +69,7 @@ class QC1:
         self.coef_range = [0.0, 1.2]
 
     @staticmethod
-    def f(SZA, GSW, coef: Coef):
+    def f(GSW, SZA, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
         l1 = qcr.REF.SOLAR_CONSTANT * coef.C1 * math.pow(math.cos(math.radians(SZA)), 1.2) + 50
@@ -38,29 +83,7 @@ class QC1:
         return qcr.QC1(GSW, SZA, coef)
 
     def calc_lim(self, df, coef: Coef):
-        """ Computation of the limits and the labels of a dataframe"""
-
-        df = df[['timestamp', self.varx, self.vary]]
-
-        X_val1 = np.array(df[self.varx])
-        X_val2 = np.array(df[self.vary])
-
-        lim_l1 = []
-        lim_l2 = []
-        lim_bsrn = []
-        labels = []
-
-        for VAL1, VAL2 in zip(X_val1, X_val2):
-            l1, l2, l_bsrn = self.f(VAL1, VAL2, coef)
-
-            label = self.lab(VAL1, VAL2, coef)
-
-            lim_l1.append(l1)
-            lim_l2.append(l2)
-            lim_bsrn.append(l_bsrn)
-            labels.append(label)
-
-        return lim_l1, lim_l2, lim_bsrn, labels
+        return gen_calc_lim(self, df, coef)
 
 
 class QC2:
@@ -75,7 +98,7 @@ class QC2:
         self.coef_range = [0.0, 1.0]
 
     @staticmethod
-    def f(SZA, Dif, coef: Coef):
+    def f(Dif, SZA, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
         l1 = qcr.REF.SOLAR_CONSTANT * coef.C2 * math.pow(math.cos(math.radians(SZA)), 1.2) + 30
@@ -89,30 +112,7 @@ class QC2:
         return qcr.QC2(Dif, SZA, coef)
 
     def calc_lim(self, df, coef: Coef):
-        """ Computation of the limits and the labels of a dataframe"""
-
-        df = df[['timestamp', self.varx, self.vary]]
-
-        X_val1 = np.array(df[self.varx])
-        X_val2 = np.array(df[self.vary])
-
-        lim_l1 = []
-        lim_l2 = []
-        lim_bsrn = []
-
-        labels = []
-
-        for VAL1, VAL2 in zip(X_val1, X_val2):
-            l1, l2, l_bsrn = self.f(VAL1, VAL2, coef)
-
-            label = self.lab(VAL1, VAL2, coef)
-
-            lim_l1.append(l1)
-            lim_l2.append(l2)
-            lim_bsrn.append(l_bsrn)
-            labels.append(label)
-
-        return lim_l1, lim_l2, lim_bsrn, labels
+        return gen_calc_lim(self, df, coef)
 
 
 class QC3:
@@ -127,7 +127,7 @@ class QC3:
         self.coef_range = [0.0, 1.0]
 
     @staticmethod
-    def f(SZA, DirN, coef: Coef):
+    def f(DirN, SZA, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
         l1 = qcr.REF.SOLAR_CONSTANT * coef.C3 * math.pow(math.cos(math.radians(SZA)), 0.2) + 10
@@ -141,31 +141,7 @@ class QC3:
         return qcr.QC3(DirN, SZA, coef)
 
     def calc_lim(self, df, coef: Coef):
-        """ Computation of the limits and the labels of a dataframe"""
-
-        df = df[['timestamp', self.varx, self.vary]]
-
-        X_val1 = np.array(df[self.varx])
-        X_val2 = np.array(df[self.vary])
-
-        lim_l1 = []
-        lim_l2 = []
-        lim_bsrn = []
-
-        labels = []
-
-        for VAL1, VAL2 in zip(X_val1, X_val2):
-
-            l1, l2, l_bsrn = self.f(VAL1, VAL2, coef)
-
-            label = self.lab(VAL1, VAL2, coef)
-
-            lim_l1.append(l1)
-            lim_l2.append(l2)
-            lim_bsrn.append(l_bsrn)
-            labels.append(label)
-
-        return lim_l1, lim_l2, lim_bsrn, labels
+        return gen_calc_lim(self, df, coef)
 
 
 class QC5:
@@ -181,7 +157,7 @@ class QC5:
         self.coef_range_min = [200.0, 400.0]
 
     @staticmethod
-    def f(SZA, LWdn, coef: Coef):
+    def f(LWdn, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
         l1_max = coef.C6
@@ -199,38 +175,7 @@ class QC5:
         return qcr.QC5(LWdn, coef)
 
     def calc_lim(self, df, coef: Coef):
-        """ Computation of the limits and the labels of a dataframe"""
-
-        df = df[['timestamp', self.varx, self.vary]]
-
-        X_val1 = np.array(df[self.varx])
-        X_val2 = np.array(df[self.vary])
-
-        lim_l1 = []
-        lim_l2 = []
-        lim_bsrn = []
-
-        lim_l1_min = []
-        lim_l2_min = []
-        lim_bsrn_min = []
-
-        labels = []
-
-        for VAL1, VAL2 in zip(X_val1, X_val2):
-            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coef)
-
-            lim_l1_min.append(l1_min)
-            lim_l2_min.append(l2_min)
-            lim_bsrn_min.append(l_bsrn_min)
-
-            label = self.lab(VAL1, VAL2, coef)
-
-            lim_l1.append(l1)
-            lim_l2.append(l2)
-            lim_bsrn.append(l_bsrn)
-            labels.append(label)
-
-        return lim_l1, lim_l2, lim_bsrn, labels
+        return gen_calc_lim(self, df, coef)
 
 
 class QC10:
@@ -246,7 +191,7 @@ class QC10:
         self.coef_range_min = [0.60, 1.0]
 
     @staticmethod
-    def f(Ta, LWdn, coef: Coef):
+    def f(LWdn, Ta, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
         l1_max = qcr.REF.BOLTZMANN * math.pow(Ta + 273.15, 4) + coef.C12
@@ -264,35 +209,4 @@ class QC10:
         return qcr.QC10(LWdn, Ta, coef)
 
     def calc_lim(self, df, coef: Coef):
-        """ Computation of the limits and the labels of a dataframe"""
-
-        df = df[['timestamp', self.varx, self.vary]]
-
-        X_val1 = np.array(df[self.varx]) + 273.15
-        X_val2 = np.array(df[self.vary])
-
-        lim_l1 = []
-        lim_l2 = []
-        lim_bsrn = []
-
-        lim_l1_min = []
-        lim_l2_min = []
-        lim_bsrn_min = []
-
-        labels = []
-
-        for VAL1, VAL2 in zip(X_val1, X_val2):
-            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = self.f(VAL1, VAL2, coef)
-
-            lim_l1_min.append(l1_min)
-            lim_l2_min.append(l2_min)
-            lim_bsrn_min.append(l_bsrn_min)
-
-            label = self.lab(VAL1, VAL2, coef)
-
-            lim_l1.append(l1)
-            lim_l2.append(l2)
-            lim_bsrn.append(l_bsrn)
-            labels.append(label)
-
-        return lim_l1, lim_l2, lim_bsrn, labels
+        return gen_calc_lim(self, df, coef)

@@ -3,6 +3,7 @@ from pybsrnqc.config import Coef
 
 default_coef = Coef()
 
+
 class REF:
     """BSRN Various quantities related to measurements"""
     TSWN = None  # temperature limit for albedo limit test, temp at which "snow" limit is used
