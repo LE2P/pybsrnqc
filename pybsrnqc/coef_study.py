@@ -14,9 +14,6 @@ from pybsrnqc.config import Coef
 # -----------------------------------------------------------------------------------------------------------
 # Initialisation of a set of coefficients
 # Get data conf from JSON file
-with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
-    with open(data_path, 'r') as f:
-        dic_coefs = json.load(f)
 
 dic_coefs = Coef()
 # ------------------------------------------------------------------------------------------------------------
@@ -68,8 +65,8 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
 
         # Generation of the new coefficients
 
-        dic = dic_coefs.copy()
-        dic['COEF'][coef_name] = coef
+        dic = Coef()
+        dic.__setattr__(coef_name, coef)
 
         # Generation of the outliers according to the limits linked to the coefficients
 
@@ -96,8 +93,8 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
         for coef_min in values_c_min:
 
             # Generation of the new coefficients
-            dic = dic_coefs.copy()
-            dic['COEF'][coef_name_min] = coef_min
+            dic = Coef()
+            dic.__setattr__(coef_name_min, coef_min)
 
             # Generation of the outliers according to the limits linked to the coefficients
             df_lim = df_min.copy()
@@ -279,8 +276,8 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
     # Adding a constraint for QC3 and QC10
     if QC.name == 'QC3' or QC.name == 'QC10':
         # We precise that points under a certain limit are not ouliers
-        dic = dic_coefs.copy()
-        dic['COEF'][coef_name] = 0.6
+        dic = Coef()
+        dic.__setattr__(coef_name, 0.6)
 
         for el in selected:
             df.loc[(df['temperature'] == el[0]) & (df[QC.vary] == el[1]), 'out_density'] = 0
@@ -311,8 +308,8 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
             print('-', end='')
 
         # Generation of coefficient
-        dic = dic_coefs.copy()
-        dic['COEF'][coef_name] = coef
+        dic = Coef()
+        dic.__setattr__(coef_name, coef)
 
         # Generation of the outliers according to the equations and the density
 
@@ -337,8 +334,8 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
 
             # Generation of coefficient
 
-            dic = dic_coefs.copy()
-            dic['COEF'][coef_name_min] = coef_min
+            dic = Coef()
+            dic.__setattr__(coef_name_min, coef_min)
 
             # Generation of the outliers according to the equations and the density
 
