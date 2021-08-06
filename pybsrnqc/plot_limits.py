@@ -43,7 +43,7 @@ def limit_plot(df, QC, coef: Coef, save: bool = False, level='all', display: boo
 
         if QC.vary == 'downward_avg':
 
-            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = QC.f(VAL1, VAL2, coef)
+            l1, l2, l_bsrn, l1_min, l2_min, l_bsrn_min = QC.f(VAL2, VAL1, coef)
 
             lim_l1_min.append(l1_min)
             lim_l2_min.append(l2_min)
@@ -51,7 +51,7 @@ def limit_plot(df, QC, coef: Coef, save: bool = False, level='all', display: boo
 
         else:
 
-            l1, l2, l_bsrn = QC.f(VAL1, VAL2, coef)
+            l1, l2, l_bsrn = QC.f(VAL2, VAL1, coef)
 
         lim_l1.append(l1)
         lim_l2.append(l2)
