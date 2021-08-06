@@ -52,9 +52,10 @@ You can then study this data :
   You can then load your coefficient to your configuration file. Thus, your automatic control will take into account the new specific coefficient calculated.
   
   ```sh
-  from pybsrnqc import config
+  from pybsrnqc import config.Coef
   
-  config.load(name_coef, coef)
+  my_coef = Coef()
+  my_coef.__setattr__(name_coef, coef)
   ```
   If your QC have a maximum and a minimum limit (QC5 for instance) you can use the following code : 
   
@@ -63,7 +64,7 @@ You can then study this data :
   from pybsrnqc import config
   
   name_coef, coef, name_coef_min, coef_min = cc.compute('./dataset')
-  config.load(name_coef, coef, name_coef_min, coef_min)
+  my_coef.__setattr__(name_coef_min, coef_min)
   ```
   
   ### Quality Control tool
@@ -73,7 +74,7 @@ You can then study this data :
   ```sh
   from pybsrnqc.automaticQC import generateQCFiles
   
-generateQCFiles('./dataset/201908_brut.csv')
+  generateQCFiles('./dataset/201908_brut.csv')
   ```
   Be careful : when you generate your files, it is in the same directory than you brut data. Don't forget to move your generated files if you want to continue to study your brut data.
   
@@ -123,13 +124,8 @@ generateQCFiles('./dataset/201908_brut.csv')
     from pybsrnqc import plot_limits as pl
     from pybsrnqc import qc_functions as qcf
 
-    # Get data conf from JSON file
-    with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
-    with open(data_path, 'r') as f:
-        coefs = json.load(f)
-
     # Plot the limits for the QC chosen (here QC1)
-    pl.limit_plot(df, qcf.QC1(), coefs)
+    pl.limit_plot(df, qcf.QC1(), my_coef)
 
     ```
 * Plotting limits with differents coefficient values
@@ -137,7 +133,7 @@ generateQCFiles('./dataset/201908_brut.csv')
   ```sh
   
   # Plot the limits for the QC chosen (here QC1)
-  pl.multiplot_coef(df, qcf.QC1(), coefs)
+  pl.multiplot_coef(df, qcf.QC1(), my_coef)
  
   ```
 
@@ -201,7 +197,7 @@ generateQCFiles('./dataset/201908_brut.csv')
 * `plot_limits.limit_plot(df, QC, coefs, save=False, level='all', display=True, values=True, fig=True)`
     * df : the dataframe studied
     * QC : the QC studied declared thanks to `qc_functions`
-    * coefs : a set of coefficients, imported from `qc_rad.json`
+    * coefs : a set of coefficients, created with the Coef class
     * save : if True, the graph is saved
     * level : `'all'` (default) to plot all the limits, `'level_2'`, `'level_1'` or `'level_bsrn'` for only one of them
     * display : if True, the graph is displayed
@@ -212,7 +208,7 @@ generateQCFiles('./dataset/201908_brut.csv')
 * `plot_limits.multiplot_coef(df, QC, coefs, level='level_2', coef_values=[0.0, 0.5, 1.2], level_min=None, coef_values_min=None)`
     * df : the dataframe studied
     * QC : the QC studied declared thanks to `qc_functions`
-    * coefs : a set of coefficients, imported from `qc_rad.json`
+    * coefs : a set of coefficients, created with the Coef class
     * level : `'level_2'` (default) to plot the 2nd level limits, `'level_1'` or `'level_bsrn'` for the others
     * coef_values : the coefficient values you want to plot. Ex: `[value1, value2]`
     * level_min : if you want to add a lower limit, `'level_2_min'` or `'level_1_min'`
@@ -229,7 +225,7 @@ generateQCFiles('./dataset/201908_brut.csv')
     * df : the dataframe studied
     * QC : the QC studied declared thanks to `qc_functions`
     * display : if True, the graph is displayed
-    * coefs : a set of coefficients, imported from `qc_rad.json`
+    * coefs : a set of coefficients, created with the Coef class
     * limits :  if True, limits are plotted on the KDE graph
     * level : `'all'` (default) to plot all the limits, `'level_2'`, `'level_1'` or `'level_bsrn'` for only one of them
     * log_form : if True, the computed kernel is returned under the log form
