@@ -171,7 +171,7 @@ class QC5:
         return l1_max, l2_max, l_bsrn_max, l1_min, l2_min, l_bsrn_min
 
     @staticmethod
-    def lab(LWdn, coef: Coef):
+    def lab(LWdn, SZA coef: Coef):
         return qcr.QC5(LWdn, coef)
 
     def calc_lim(self, df, coef: Coef):
