@@ -157,7 +157,7 @@ class QC5:
         self.coef_range_min = [200.0, 400.0]
 
     @staticmethod
-    def f(LWdn, coef: Coef):
+    def f(LWdn, SZA, coef: Coef):
         ''' Return the 2 main variables, the 1rst level limit, the 2nd level limit and the physical limit for a sample'''
 
         l1_max = coef.C6
