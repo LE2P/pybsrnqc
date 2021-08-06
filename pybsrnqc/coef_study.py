@@ -71,7 +71,7 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
         # Generation of the outliers according to the limits linked to the coefficients
 
         df_lim = df.copy()
-        df_lim['flag'] = QC.calc_lim(df, coefs=dic)[3]
+        df_lim['flag'] = QC.calc_lim(df, coef=dic)[3]
         df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
         df_lim.loc[df_lim.flag == 4, "out_coef"] = 1
 
@@ -98,7 +98,7 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
 
             # Generation of the outliers according to the limits linked to the coefficients
             df_lim = df_min.copy()
-            df_lim['flag'] = QC.calc_lim(df_min, coefs=dic)[3]
+            df_lim['flag'] = QC.calc_lim(df_min, coef=dic)[3]
             df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
             df_lim.loc[df_lim.flag == 3, "out_coef"] = 1
 
@@ -314,7 +314,7 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
         # Generation of the outliers according to the equations and the density
 
         df_lim = df.copy()
-        df_lim['flag'] = QC.calc_lim(df, coefs=dic)[3]
+        df_lim['flag'] = QC.calc_lim(df, coef=dic)[3]
 
         if level == 'level_2':
             df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
@@ -340,7 +340,7 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
             # Generation of the outliers according to the equations and the density
 
             df_lim = df.copy()
-            df_lim['flag'] = QC.calc_lim(df, coefs=dic)[3]
+            df_lim['flag'] = QC.calc_lim(df, coef=dic)[3]
 
             if level == 'level_2':
                 df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
