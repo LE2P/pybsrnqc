@@ -206,7 +206,7 @@ class QC10:
 
     @staticmethod
     def lab(LWdn, Ta, coef: Coef):
-        return qcr.QC10(LWdn, Ta, coef)
+        return qcr.QC10(LWdn, Ta + 273.15, coef)
 
     def calc_lim(self, df, coef: Coef):
         return gen_calc_lim(self, df, coef)
