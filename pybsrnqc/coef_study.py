@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from pybsrnqc.config import Coef 
 
 # -----------------------------------------------------------------------------------------------------------
 # Initialisation of a set of coefficients
@@ -16,6 +17,8 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 with importlib.resources.path("pybsrnqc", "qcrad_conf.json") as data_path:
     with open(data_path, 'r') as f:
         dic_coefs = json.load(f)
+
+dic_coefs = Coef()
 # ------------------------------------------------------------------------------------------------------------
 
 
