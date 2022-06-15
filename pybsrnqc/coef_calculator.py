@@ -8,13 +8,14 @@ from pybsrnqc import coef_study as cs
 from pybsrnqc import open_data as od
 from pybsrnqc import plot_limits as pl
 from pybsrnqc import qc_functions as qcf
-from pybsrnqc.config import Coef
+from pybsrnqc.config import Coef, Station
 
 # Coefficients initialisation
 # Get data conf from JSON file
 coef = Coef()
 
-def compute(path: str, bw_sel: str = None):
+
+def compute(path: str, bw_sel: str = None, station: Station = Station()):
 
     qc = None
     while qc not in {"QC1", "QC2", "QC3", "QC5", "QC10"}:
@@ -36,7 +37,7 @@ def compute(path: str, bw_sel: str = None):
         qc = qcf.QC10()
 
     # Get datas
-    df = od.open_all(path=path + '/')
+    df = od.open_all(path=path + '/', station=station)
 
     # Calculating kernel density for the dataset
     if qc.name in {'QC3', 'QC10'}:

@@ -15,7 +15,7 @@ from pybsrnqc.utils import getZenith
 # Récupération de toutes les données
 
 
-def open_all(path='./dataset', period=None, select_day=False, select_zenith=True):
+def open_all(path='./dataset', period=None, select_day=False, select_zenith=True, station: Station = Station()):
     """ Open as a dataframe the brut data in a repository
     select_day = True means it doesn't take night hours
     select_zenith = True means it computes the SZA in the dataframe
@@ -67,7 +67,7 @@ def open_all(path='./dataset', period=None, select_day=False, select_zenith=True
     # Zenith computation
 
     timestamp_list = df_fus.timestamp.to_list()
-    zenith_serie = getZenith(timestamp_list, Station().LAT, Station().LON, Station().ALT)
+    zenith_serie = getZenith(timestamp_list, station.LAT, station.LON, station.ALT)
     df_fus['SZA'] = list(zenith_serie)
 
     if select_zenith:
