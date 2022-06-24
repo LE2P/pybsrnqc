@@ -22,7 +22,7 @@ class Coef:
         self.C1 = loaded_json['COEF']["C1"]
         self.D1 = loaded_json['COEF']["D1"]
         self.C2 = loaded_json['COEF']["C2"]
-        self.D2 = loaded_json['COEF']["D1"]
+        self.D2 = loaded_json['COEF']["D2"]
         self.C3 = loaded_json['COEF']["C3"]
         self.D3 = loaded_json['COEF']["D3"]
         self.C5 = loaded_json['COEF']["C5"]
