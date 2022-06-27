@@ -2,7 +2,7 @@
 
 A library for BSRN Quality Control (QC).
 
-Repository github with the source code : <https://github.com/LE2P/PyBsrnQC>
+Repository github with the source code : <https://github.com/LE2P/pybsrnqc>
 
 ## Installation
 

@@ -314,7 +314,7 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
         # Generation of the outliers according to the equations and the density
 
         df_lim = df.copy()
-        df_lim['flag'] = QC.calc_lim(df, coef=dic)[3]
+        df_lim['flag'] = <<<<<<<<<<<<<QC>>>>>>>>>>>>>.calc_lim(df, coef=dic)[3]
 
         if level == 'level_2':
             df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
@@ -397,5 +397,5 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
         print(line_max_min)
 
         return df_scores, line_max, df_scores_min, line_max_min
-
+<
     return df_scores, line_max
