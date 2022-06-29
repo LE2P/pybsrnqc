@@ -127,14 +127,16 @@ def plotQCFiles(filepath):
     year = df['timestamp'][0][:4]
     month = df['timestamp'][0][5:7]
     yearMonth = year + month
-    typeFile = 'brut'
+    typeFile = os.path.split(filepath)[-1].split("_")[-1].split(".")[0]
     # create directory if it necessary
     Path("plot/" + yearMonth).mkdir(parents=True, exist_ok=True)
     chart_name = 'plot/' + yearMonth + '/' + typeFile + '.html'
     if typeFile == "qcrad":
         parameters_to_plot = ["QC1", "QC2", "QC3", "QC5", "QC7", "QC8", "QC10", "QC19"]
-    else:
+    elif typeFile == "brut" or typeFile == "aqc" or typeFile == "vqc":
         parameters_to_plot = ["global2_avg", "diffuse_avg", "direct_avg", "downward_avg", "temperature"]
+    else:
+        raise NameError('Your file be should named "YYYYMM_[brut|qcrad|aqc|vqc].csv"')
     # get sensor data
     df = pd.read_csv(csv_name)
     timestamp = df.timestamp.to_list()

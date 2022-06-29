@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='pybsrnqc',
-    version='0.2.0',
+    version='0.2.1',
     description='Package to study BSRN data and their quality control',
     url='https://github.com/LE2P/pybsrnqc/tree/main/pybsrnqc',
     author='Maelle Baronnet',
