@@ -60,7 +60,6 @@ def compute(path: str, bw_sel: str = None, station: Station = Station()):
         step_min = (coef_range_min[1] - coef_range_min[0]) / nb_try
 
     # Finding the best coefficient for a density threshold given
-    if qc.vary == 'downward_avg':
         if qc.name == 'QC10':
             df_score, score, df_score_min, score_min = cs.calc_coef(
                 df, log_kernel, qc, threshold, level=level,

@@ -72,7 +72,7 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
 
         df_lim = df.copy()
         df_lim['flag'] = QC.calc_lim(df, coef=dic)[3]
-        df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
+        df_lim['out_coef'] = np.zeros(df_lim.shape[0],)
         df_lim.loc[df_lim.flag == 4, "out_coef"] = 1
 
         df_lim_out = df_lim.loc[df_lim['out_coef'] == 1]
@@ -99,7 +99,7 @@ def coef_variation(df, log_kernel, QC, level='level_2', coef_range=[0.0, 1.2], s
             # Generation of the outliers according to the limits linked to the coefficients
             df_lim = df_min.copy()
             df_lim['flag'] = QC.calc_lim(df_min, coef=dic)[3]
-            df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
+            df_lim['out_coef'] = np.zeros(df_lim.shape[0],)
             df_lim.loc[df_lim.flag == 3, "out_coef"] = 1
 
             df_lim_out = df_lim.loc[df_lim['out_coef'] == 1]
@@ -228,8 +228,8 @@ def threshold_var(df, log_kernel, threshold_range=None, step=0.1, display=True):
 
     for threshold in values_t:
 
-        df['out_density'] = np.array([0] * df.shape[0])
-        df['out_density_min'] = np.array([0] * df.shape[0])
+        df['out_density'] = np.zeros(df.shape[0],)
+        df['out_density_min'] = np.zeros(df.shape[0],)
 
         # Labeling according to the chosen threshold
         df.loc[df.log_kde <= threshold, "out_density"] = 1
@@ -262,8 +262,8 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
 
     # Labeling according to the chosen threshold
     df['log_kde'] = log_kernel
-    df['out_density'] = np.array([0] * df.shape[0])
-    df['out_density_min'] = np.array([0] * df.shape[0])
+    df['out_density'] = np.zeros(df.shape[0],)
+    df['out_density_min'] = np.zeros(df.shape[0],)
     df.loc[df.log_kde <= threshold, "out_density"] = 1
     df.loc[(df['downward_avg'] <= 350) & (df.log_kde <= threshold), 'out_density_min'] = 1
 
@@ -314,13 +314,13 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
         # Generation of the outliers according to the equations and the density
 
         df_lim = df.copy()
-        df_lim['flag'] = <<<<<<<<<<<<<QC>>>>>>>>>>>>>.calc_lim(df, coef=dic)[3]
+        df_lim['flag'] = QC.calc_lim(df, coef=dic)[3]
 
         if level == 'level_2':
-            df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
+            df_lim['out_coef'] = np.zeros(df_lim.shape[0],)
             df_lim.loc[df_lim.flag == 4, "out_coef"] = 1
         else:
-            df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
+            df_lim['out_coef'] = np.zeros(df_lim.shape[0],)
             df_lim.loc[(df_lim.flag == 2) | (df_lim.flag == 4), "out_coef"] = 1
 
         a_scores.append(accuracy_score(df['out_density'], df_lim['out_coef']))
@@ -343,10 +343,10 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
             df_lim['flag'] = QC.calc_lim(df, coef=dic)[3]
 
             if level == 'level_2':
-                df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
+                df_lim['out_coef'] = np.zeros(df_lim.shape[0],)
                 df_lim.loc[df_lim.flag == 3, "out_coef"] = 1
             else:
-                df_lim['out_coef'] = np.array([0] * df_lim.shape[0])
+                df_lim['out_coef'] = np.zeros(df_lim.shape[0],)
                 df_lim.loc[(df_lim.flag == 1) | (df_lim.flag == 3), "out_coef"] = 1
 
             a_scores_min.append(accuracy_score(df['out_density'],
@@ -397,5 +397,4 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
         print(line_max_min)
 
         return df_scores, line_max, df_scores_min, line_max_min
-<
     return df_scores, line_max
