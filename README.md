@@ -24,13 +24,13 @@ The data has to have at least the following columns in the header :
 
 __Example :__
 
-Data under the form `YYYYMM_brut.csv` with a csv file per month gathered in a directory `dataset`.
+Data under the form `YYYYMM_raw.csv` with a csv file per month gathered in a directory `dataset`.
 
 ```sh
 -- datastet/
-   |-- 201906_brut.csv
-   |-- 201907_brut.csv
-   |-- 201908_brut.csv
+   |-- 201906_raw.csv
+   |-- 201907_raw.csv
+   |-- 201908_raw.csv
    │-- ...
 ```
 
@@ -93,10 +93,10 @@ Use the `automaticQC` module in order to generate the flagged data :
 ```python
 from pybsrnqc.automaticQC import generateQCFiles
 
-generateQCFiles('./dataset/201908_brut.csv')
+generateQCFiles('./dataset/201908_raw.csv')
 ```
 
-Be careful : when you generate your files, it is in the same directory than you brut data. Don't forget to move your generated files if you want to continue to study your brut data.
+Be careful : when you generate your files, it is in the same directory than you raw data. Don't forget to move your generated files if you want to continue to study your raw data.
 
 If you want to visualize the QC of your data and your data use :
 
@@ -105,7 +105,7 @@ If you want to visualize the QC of your data and your data use :
 ```python
 from pybsrnqc.automaticQC import plotQCFiles
 
-plotQCFiles('./dataset/201908_brut.csv')
+plotQCFiles('./dataset/201908_raw.csv')
 ```
 
 #### `plotBSRN` from `visualPlot`
@@ -113,7 +113,7 @@ plotQCFiles('./dataset/201908_brut.csv')
 ```python
 from pybsrnqc.visualPlot import plotBSRN
 
-plotBSRN('./dataset/201908_brut.csv')
+plotBSRN('./dataset/201908_raw.csv')
 ```
 
 ### Visualization tools
@@ -130,7 +130,7 @@ from pybsrnqc import open_data as od
 df = od.open_all('./dataset')
 ```
 
-If you want to specify the period, put your data under the form `YYYYMM_brut.csv` and inquire the period as`[YYYYMM, YYYYMM]`.
+If you want to specify the period, put your data under the form `YYYYMM_raw.csv` and inquire the period as`[YYYYMM, YYYYMM]`.
 
 ```python
 # Example to select data from June to December 2019

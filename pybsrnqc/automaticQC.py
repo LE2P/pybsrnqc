@@ -95,11 +95,11 @@ def generateQCFiles(filepath, station: Station = default_station, coef: Coef = d
     print(filepath)
     # Manage filenames
     FILE_BRUT = filepath
-    FILE_AQC = os.path.splitext(FILE_BRUT.replace('_brut', ''))[0] + '_aqc.csv'
-    FILE_QCRAD = os.path.splitext(FILE_BRUT.replace('_brut', ''))[0] + '_qcrad.csv'
+    FILE_AQC = os.path.splitext(FILE_BRUT.replace('_raw', ''))[0] + '_aqc.csv'
+    FILE_QCRAD = os.path.splitext(FILE_BRUT.replace('_raw', ''))[0] + '_qcrad.csv'
     # load input file into a DataFrame
-    file_brut = pd.read_csv(FILE_BRUT)
-    timestamp_list = file_brut.timestamp.to_list()
+    file_raw = pd.read_csv(FILE_BRUT)
+    timestamp_list = file_raw.timestamp.to_list()
     zenith_serie = getZenith(timestamp_list, station.LAT, station.LON, station.ALT)
     # process input file
     datapoints_qcrad, datapoints_aqc = [], []
@@ -133,10 +133,10 @@ def plotQCFiles(filepath):
     chart_name = 'plot/' + yearMonth + '/' + typeFile + '.html'
     if typeFile == "qcrad":
         parameters_to_plot = ["QC1", "QC2", "QC3", "QC5", "QC7", "QC8", "QC10", "QC19"]
-    elif typeFile == "brut" or typeFile == "aqc" or typeFile == "vqc":
+    elif typeFile == "raw" or typeFile == "aqc" or typeFile == "vqc":
         parameters_to_plot = ["global2_avg", "diffuse_avg", "direct_avg", "downward_avg", "temperature"]
     else:
-        raise NameError('Your file be should named "YYYYMM_[brut|qcrad|aqc|vqc].csv"')
+        raise NameError('Your file be should named "YYYYMM_[raw|qcrad|aqc|vqc].csv"')
     # get sensor data
     df = pd.read_csv(csv_name)
     timestamp = df.timestamp.to_list()

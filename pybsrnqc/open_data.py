@@ -16,7 +16,7 @@ from pybsrnqc.utils import getZenith
 
 
 def open_all(path='./dataset', period=None, select_day=False, select_zenith=True, station: Station = Station()):
-    """ Open as a dataframe the brut data in a repository
+    """ Open as a dataframe the raw data in a repository
     select_day = True means it doesn't take night hours
     select_zenith = True means it computes the SZA in the dataframe
     You have to choose the period of month you want """
@@ -50,7 +50,7 @@ def open_all(path='./dataset', period=None, select_day=False, select_zenith=True
 
         for el in list_month:
 
-            dirs.append(str(el) + '_brut.csv')
+            dirs.append(str(el) + '_raw.csv')
 
     print(f'Nombre de mois : {len(dirs)}')
 
