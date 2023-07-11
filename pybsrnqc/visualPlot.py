@@ -2,7 +2,7 @@
 from bokeh import events
 from bokeh.io import curdoc
 from bokeh.layouts import column, row
-from bokeh.models import CustomJS, HoverTool, Panel, Tabs, Button, DateFormatter
+from bokeh.models import CustomJS, HoverTool, Tabs, TabPanel, Button, DateFormatter
 from bokeh.models.widgets import DataTable, TableColumn
 from bokeh.palettes import Colorblind, Plasma
 from bokeh.plotting import ColumnDataSource, figure, output_file, show
@@ -94,8 +94,8 @@ def plotBSRN(filepath: str, patterns: list[str] = None, timeStart: str = None, t
     button_flag.js_on_event(events.ButtonClick, callback)
 
     # Layout
-    ltab = Panel(child=fig, title="Line")
-    stab = Panel(child=fig2, title="Scatter")
+    ltab = TabPanel(child=fig, title="Line")
+    stab = TabPanel(child=fig2, title="Scatter")
     tabs = Tabs(tabs=[ltab, stab])
     layout = row(tabs, column(tableData, button_flag))
 

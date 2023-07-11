@@ -397,4 +397,5 @@ def calc_coef(df, log_kernel, QC, threshold, level='level_2', coef_range=[0.0, 1
         print(line_max_min)
 
         return df_scores, line_max, df_scores_min, line_max_min
+
     return df_scores, line_max
